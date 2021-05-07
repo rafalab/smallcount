@@ -28,18 +28,17 @@ read_sparse_csv <- function(fn){
   }
   close(conn)
 
-
   i <- unlist(i)
   j <- unlist(j)
   x <- unlist(x)
 
-  m <- as.integer(length(cns))
+  nc <- as.integer(length(cns))
   o <- order(j)
   i <- i[o]
   x <- x[o]
-  j <- c(0L, as.integer(cumsum(table(factor(j, levels = 1:m)))))
+  j <- c(0L, cumsum(as.integer(table(factor(j, levels = 0:(nc-1))))))
 
-  Dim <- c(n, m)
+  Dim <- c(n, nc)
   Dimnames <- list(unlist(rns), cns)
 
   newm <- new("dgCMatrix", x = x, i = i, p = j, Dim = Dim, Dimnames = Dimnames)
