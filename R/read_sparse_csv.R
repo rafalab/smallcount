@@ -14,12 +14,11 @@ read_sparse_csv_transpose <- function(fn){
   ## Get genenames
   rns <- strsplit(l, ",")[[1]][-1]
 
-
   ## initialize lists,
-  ##cns are the cell names
-  ## i is the columns index of non-zeros within row,
-  ## p is how many nonzero in each column
+  ## cns are the cell names
+  ## i is the row index of non-zeros within column
   ## x are the non-zero values
+  ## p has a 0 followed by an index for each column denoting where the column ends within in i and x
   cns <- vector("list")
   i <- vector("list")
   p <- vector("list")
@@ -120,10 +119,10 @@ read_sparse_csv <- function(fn){
   ## convert to a dgCMatrix format
   ## to do this we have to
   ## order everything in column order
-  ## then count for each column how many entries in each columns
   o <- order(j)
   i <- i[o]
   x <- x[o]
+  ## then count for each column where it ends
   j <- c(0L, cumsum(as.integer(table(factor(j, levels = 0:(nc-1))))))
 
   Dim <- c(n, nc)
