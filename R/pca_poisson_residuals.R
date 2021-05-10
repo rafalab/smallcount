@@ -1,4 +1,22 @@
+#' Principal Component Analysis on Pearson residuals
+#'
+#' @param y A tgCMatrix sparse Matrix.
+#' @param k Number of principal components to return.
+#' @param rate The rowwise rates.
+#' @param n The total counts in each column.
+#'
+#' @importFrom Matrix colSums rowSums crossprod
+#' @export
+#'
+#' @example
+#' data(tenx_subset)
+#' pc <- pca_poisson_residuals(tenx_subset, k = 10)
+#' plot(pc$x[,1:2])
+#' barplot(pc$sdev)
+
 pca_poisson_residuals <- function(y, k = 50, rate = NULL, n = NULL){
+
+  if(!is(y, "dgCMatrix")) stop("y must be class dgCMatrix")
 
   if(is.null(n)) n <- Matrix::colSums(y)
   total <- sum(n)

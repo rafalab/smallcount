@@ -1,81 +1,36 @@
-### The functions are prototypes for a parser of csv files
-### that returns the components needed to form  dgCMatrix
-### There is one version for the case in which genes are in the columns of the csv
-### and one for when they are in the rows. The former is simpler and faster so I include it first.
-### for both we assume the first rows are the colums names and the first column are the rownames
+#' Read a sparse delimited file in a dgCMatrix
+#'
+#' The functions are prototypes. They need to be ported to C++
+#' The functions reads in sparse delimited file.
+#' There is one version for the case in which genes are in the rows,
+#' and one for the transpose case, when they are in the columns.
+#' The transpose case simpler and faster.
+#' For both cases we assume the first rows are the colums names and the first column are the rownames
 
-### Genes are represented by columns
-read_sparse_csv_transpose <- function(fn){
-  require(Matrix)
-
-  conn <- gzcon(file(file.path(fn), "rb"))
-  l <- readLines(conn, n = 1)
-
-  ## Get genenames
-  rns <- strsplit(l, ",")[[1]][-1]
-
-  ## initialize lists,
-  ## cns are the cell names
-  ## i is the row index of non-zeros within column
-  ## x are the non-zero values
-  ## p has a 0 followed by an index for each column denoting where the column ends within in i and x
-  cns <- vector("list")
-  i <- vector("list")
-  p <- vector("list")
-  x <- vector("list")
-
-  ## n is counting rows
-  n <- 0L
-  ## In dgCMatrix first p is 0
-  p[[1]] <- 0L
-
-  ## Read line by line until the end
-  while(TRUE){
-    l <- readLines(conn, n = 1)
-    if(!length(l)) break()
-
-    n <- n + 1L
-
-    y <- strsplit(l, ",")[[1]]
-    ## this is the n-th row names
-    cns[[n]] <- y[1]
-
-    ## remove first entry which is rowname
-    y <- as.numeric(y[-1])
-
-    ## index of non zero columns
-    i[[n]] <- as.integer(which(y>0)) - 1L
-
-    ## end of the n-th column
-    p[[n+1]] <- p[[n]] + length(i[[n]])
-
-    ## non-zero values
-    x[[n]] <- y[ i[[n]] + 1L] ## these are t
-
-  }
-  close(conn)
-
-  ## Generate entries for the dgCMatrix
-  i <- unlist(i)
-  p <- unlist(p)
-  x <- unlist(x)
-
-  Dim <- c(as.integer(length(rns)), n)
-  Dimnames <- list(rns, unlist(cns))
-
-  ## Creat matrix, this will happen in R not in C++
-  newm <- new("dgCMatrix", x = x, i = i, p = p, Dim = Dim, Dimnames = Dimnames)
-  return(newm)
-}
+#' @param file A tgCMatrix sparse Matrix.
+#' @param sep A factor defining the group for each column.
+#'
+#' @export
+#'
+#' @examples
+#'
+#' ## Original object
+#' data("tenx_subset")
+#'
+#' new <- read_sparse_csv(system.file("extdata/tenx_subset.csv.gz", package = "smallcount"))
+#' identical(new, tenx_subset)
+#'
+#' new <- read_sparse_csv_transpose(system.file("extdata/tenx_subset-transpose.csv.gz", package = "smallcount"))
+#' identical(new, tenx_subset)
 
 ### Genes in rows
-read_sparse_csv <- function(fn){
+read_sparse_csv <- function(file, sep = ","){
   require(Matrix)
 
-  conn <- gzcon(file(file.path(fn), "rb"))
+  conn <- gzcon(file(file.path(file), "rb"))
   ## Get cellnames
   l <- readLines(conn, n = 1)
-  cns <- strsplit(l, ",")[[1]][-1]
+  cns <- strsplit(l, sep)[[1]][-1]
 
   ## initialize lists,
   ##rns are the genenames
@@ -132,16 +87,70 @@ read_sparse_csv <- function(fn){
   return(newm)
 }
 
+#' @describeIn read_sparse_csv
+#' @export
 
+# Genes in columns
+read_sparse_csv_transpose <- function(file, sep = ","){
+  require(Matrix)
 
+  conn <- gzcon(file(file.path(file), "rb"))
+  l <- readLines(conn, n = 1)
 
-## Test
-m <- readRDS("inst/extdata/small_example.rds")
+  ## Get genenames
+  rns <- strsplit(l, sep)[[1]][-1]
 
-newm <- read_sparse_csv("inst/extdata/small_example.csv.gz")
-identical(newm, m)
+  ## initialize lists,
+  ## cns are the cell names
+  ## i is the row index of non-zeros within column
+  ## x are the non-zero values
+  ## p has a 0 followed by an index for each column denoting where the column ends within in i and x
+  cns <- vector("list")
+  i <- vector("list")
+  p <- vector("list")
+  x <- vector("list")
 
-newm <- read_sparse_csv_transpose("inst/extdata/small_example-transpose.csv.gz")
-identical(newm, m)
+  ## n is counting rows
+  n <- 0L
+  ## In dgCMatrix first p is 0
+  p[[1]] <- 0L
 
+  ## Read line by line until the end
+  while(TRUE){
+    l <- readLines(conn, n = 1)
+    if(!length(l)) break()
+
+    n <- n + 1L
+
+    y <- strsplit(l, sep)[[1]]
+    ## this is the n-th row names
+    cns[[n]] <- y[1]
+
+    ## remove first entry which is rowname
+    y <- as.numeric(y[-1])
+
+    ## index of non zero columns
+    i[[n]] <- as.integer(which(y>0)) - 1L
+
+    ## end of the n-th column
+    p[[n+1]] <- p[[n]] + length(i[[n]])
+
+    ## non-zero values
+    x[[n]] <- y[ i[[n]] + 1L] ## these are t
+
+  }
+  close(conn)
+
+  ## Generate entries for the dgCMatrix
+  i <- unlist(i)
+  p <- unlist(p)
+  x <- unlist(x)
+
+  Dim <- c(as.integer(length(rns)), n)
+  Dimnames <- list(rns, unlist(cns))
+
+  ## Creat matrix, this will happen in R not in C++
+  newm <- new("dgCMatrix", x = x, i = i, p = p, Dim = Dim, Dimnames = Dimnames)
+  return(newm)
+}
 

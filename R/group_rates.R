@@ -1,4 +1,13 @@
+#' Rowwise rates for groups
+#'
+#' @param y A tgCMatrix sparse Matrix.
+#' @param g A factor defining the group for each column.
+#'
+#' @export
+#'
 group_rates <- function(y, g){
+
+  if(!is(y, "dgCMatrix")) stop("y must be class dgCMatrix")
 
   if(!is.factor(g)){
     warning("Coercing g into a factor")

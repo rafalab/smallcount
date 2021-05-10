@@ -1,4 +1,20 @@
+#' Poisson Deviance
+#'
+#' @param y A tgCMatrix sparse Matrix.
+#' @param rate The rowwise rates.
+#' @param n The total counts in each column.
+#'
+#' @importFrom Matrix colSums rowSums
+#' @export
+#'
+#' @examples
+#' data("tenx_subset")
+#' dev <- poisson_deviance(tenx_subset)
+#' hist(dev, nclass = 50)
+
 poisson_deviance <- function(y, rate = NULL, n = NULL){
+
+  if(!is(y, "dgCMatrix")) stop("y must be class dgCMatrix")
 
   if(is.null(n)) n <- Matrix::colSums(y)
   if(is.null(rate)) rate <- Matrix::rowSums(y)/sum(n)
