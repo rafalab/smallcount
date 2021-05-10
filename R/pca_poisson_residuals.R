@@ -23,7 +23,7 @@ pca_poisson_residuals <- function(y, k = 50, rate = NULL, n = NULL){
 
   return(list(sdev = sqrt(e$values/(ncol(y)-1)),
               rotation = e$vectors,
-              x = t(sweep(Matrix::crossprod(e$vectors, y),
+              x = t(sweep(as.matrix(Matrix::crossprod(e$vectors, y)),
                         1,
                         colSums(e$vectors* sqrt(rate)), "-"))))
 }
