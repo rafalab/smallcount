@@ -10,7 +10,8 @@
 #'
 #' @example
 #' data(tenx_subset)
-#' pc <- pca_poisson_residuals(tenx_subset, k = 10)
+#' dim(tenx_subset)
+#' system.time({pc <- pca_poisson_residuals(tenx_subset, k = 10)})
 #' plot(pc$x[,1:2])
 #' barplot(pc$sdev)
 

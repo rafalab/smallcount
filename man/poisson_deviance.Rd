@@ -16,3 +16,8 @@ poisson_deviance(y, rate = NULL, n = NULL)
 \description{
 Poisson Deviance
 }
+\examples{
+data("tenx_subset")
+dev <- poisson_deviance(tenx_subset)
+hist(dev, nclass = 50)
+}

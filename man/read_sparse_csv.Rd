@@ -27,6 +27,6 @@ data("tenx_subset")
 new <- read_sparse_csv(system.file("extdata/tenx_subset.csv.gz", package = "smallcount"))
 identical(new, tenx_subset)
 
-new <- read_sparse_csv_transpose("extdata/tenx_subset-transpose.csv.gz")
+new <- read_sparse_csv_transpose(system.file("extdata/tenx_subset-transpose.csv.gz", package = "smallcount"))
 identical(new, tenx_subset)
 }
