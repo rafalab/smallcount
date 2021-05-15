@@ -1,31 +1,23 @@
 #' Read a sparse delimited file in a dgCMatrix
-#'
-#' The functions are prototypes. They need to be ported to C++
+#' @note The functions are prototypes. They need to be ported to C++
 #' The functions reads in sparse delimited file.
 #' There is one version for the case in which genes are in the rows,
 #' and one for the transpose case, when they are in the columns.
 #' The transpose case simpler and faster.
 #' For both cases we assume the first rows are the colums names and the first column are the rownames
-
-#' @param file A tgCMatrix sparse Matrix.
-#' @param sep A factor defining the group for each column.
-#'
-#' @export
-#'
+#' @import Matrix
+#' @import methods
+#' @param file character(1) path to a gzipped delimited file with counts; features are rows, cells are columns
+#' @param sep character(1) delimiter for fields (defaults to ',')
 #' @examples
-#'
 #' ## Original object
 #' data("tenx_subset")
-#'
 #' new <- read_sparse_csv(system.file("extdata/tenx_subset.csv.gz", package = "smallcount"))
 #' identical(new, tenx_subset)
-#'
 #' new <- read_sparse_csv_transpose(system.file("extdata/tenx_subset-transpose.csv.gz", package = "smallcount"))
 #' identical(new, tenx_subset)
-
-### Genes in rows
+#' @export
 read_sparse_csv <- function(file, sep = ","){
-  require(Matrix)
 
   conn <- gzcon(file(file.path(file), "rb"))
   ## Get cellnames
@@ -87,12 +79,13 @@ read_sparse_csv <- function(file, sep = ","){
   return(newm)
 }
 
-#' @describeIn read_sparse_csv
-#' @export
 
-# Genes in columns
+#' Read genes in columns
+#' @describeIn read_sparse_csv
+#' @param file character(1) path to a gzipped delimited file with counts; features are rows, cells are columns
+#' @param sep character(1) delimiter for fields (defaults to ',')
+#' @export
 read_sparse_csv_transpose <- function(file, sep = ","){
-  require(Matrix)
 
   conn <- gzcon(file(file.path(file), "rb"))
   l <- readLines(conn, n = 1)

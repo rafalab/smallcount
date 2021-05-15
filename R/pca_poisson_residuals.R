@@ -6,15 +6,14 @@
 #' @param n The total counts in each column.
 #'
 #' @importFrom Matrix colSums rowSums crossprod
-#' @export
 #'
-#' @example
+#' @examples
 #' data(tenx_subset)
 #' dim(tenx_subset)
 #' system.time({pc <- pca_poisson_residuals(tenx_subset, k = 10)})
 #' plot(pc$x[,1:2])
 #' barplot(pc$sdev)
-
+#' @export
 pca_poisson_residuals <- function(y, k = 50, rate = NULL, n = NULL){
 
   if(!is(y, "dgCMatrix")) stop("y must be class dgCMatrix")
