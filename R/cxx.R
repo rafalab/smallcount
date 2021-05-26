@@ -1,4 +1,5 @@
-#' use RcppArmadillo to parse 'sparse csv'
+#' use RcppArmadillo inline to parse 'sparse csv'
+#' @useDynLib smallcount
 #' @import inline
 #' @import Matrix
 #' @param path character(1) path to uncompressed CSV with no header
@@ -13,12 +14,12 @@
 #' system(paste("gunzip", ntf)) # restores tf as gunzipped pa
 #' tf2 = tempfile()
 #' system(sprintf("sed -e '1,1d' %s | cut -d ',' -f 2- > %s", tf, tf2))
-#' tim = bench::mark(mm <- parse_sparse_csv(tf2), iterations=2)
+#' tim = bench::mark(mm <- parse_sparse_csv_inline(tf2), iterations=2)
 #' tim
 #' dim(mm$sp)
 #' mm$sp[11:16,1:6]
 #' @export
-parse_sparse_csv = function(path) {
+parse_sparse_csv_inline = function(path) {
  requireNamespace("Matrix") # for dgCMatrix
  g <- cxxfunction ( signature (vs="character"),
    plugin ="RcppArmadillo", body ='
@@ -30,3 +31,10 @@ parse_sparse_csv = function(path) {
    ')
  g(path)
 }
+
+#' use RcppArmadillo to parse 'sparse csv'
+#' @useDynLib smallcount
+#' @param fname character(1) path to simple sparse csv no header, no rownames
+#' @export
+parse_sparse_csv = function(fname)
+  parse_sparse_csv_impl(fname)

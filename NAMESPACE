@@ -2,6 +2,7 @@
 
 export(group_rates)
 export(parse_sparse_csv)
+export(parse_sparse_csv_inline)
 export(pca_poisson_residuals)
 export(poisson_deviance)
 export(poisson_dispersion)
@@ -13,3 +14,4 @@ import(methods)
 importFrom(Matrix,colSums)
 importFrom(Matrix,crossprod)
 importFrom(Matrix,rowSums)
+useDynLib(smallcount)
