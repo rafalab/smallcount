@@ -53,6 +53,25 @@ readSparseCounts(con, sep=",")
 mark(doaaron(), iterations=2)
 ```
 
+Armadillo-based C++
+
+Here we use unix utilities to remove header and gene names preparatory to
+a simple C++-based import and conversion
+
+```{r docxx}
+ pa = system.file("extdata/tenx_subset.csv.gz", package="smallcount")
+ tf = tempfile()
+ file.copy(pa, tf)
+ file.rename(tf, ntf <- paste0(tf, ".gz"))
+ system(paste("gunzip", ntf)) # restores tf as gunzipped pa
+ tf2 = tempfile()
+ system(sprintf("sed -e '1,1d' %s | cut -d ',' -f 2- > %s", tf, tf2))
+ bench::mark(mm <- parse_sparse_csv(tf2), iterations=2)
+ dim(mm$sp)
+```
+
+
+
 # Genes in columns
 
 Use rafa script
@@ -73,4 +92,19 @@ on.exit(close(con))
 readSparseCounts(con, sep=",")
 }
 mark(doaaron_t(), iterations=2)
+```
+
+Armadillo:
+
+
+```{r docxxt}
+ pa = system.file("extdata/tenx_subset-transpose.csv.gz", package="smallcount")
+ tf = tempfile()
+ file.copy(pa, tf)
+ file.rename(tf, ntf <- paste0(tf, ".gz"))
+ system(paste("gunzip", ntf)) # restores tf as gunzipped pa
+ tf2 = tempfile()
+ system(sprintf("sed -e '1,1d' %s | cut -d ',' -f 2- > %s", tf, tf2))
+ bench::mark(mm <- parse_sparse_csv(tf2), iterations=2)
+ dim(mm$sp)
 ```
