@@ -2,9 +2,12 @@
 % Please edit documentation in R/read_sparse_csv.R
 \name{read_sparse_csv}
 \alias{read_sparse_csv}
+\alias{read_sparse_csv_transpose}
 \title{Read a sparse delimited file in a dgCMatrix}
 \usage{
 read_sparse_csv(file, sep = ",")
+
+read_sparse_csv_transpose(file, sep = ",")
 }
 \arguments{
 \item{file}{character(1) path to a gzipped delimited file with counts; features are rows, cells are columns}
@@ -13,7 +16,14 @@ read_sparse_csv(file, sep = ",")
 }
 \description{
 Read a sparse delimited file in a dgCMatrix
+
+Read genes in columns
 }
+\section{Functions}{
+\itemize{
+\item \code{read_sparse_csv_transpose}: reads csv with genes in the columns
+}}
+
 \note{
 The functions are prototypes. They need to be ported to C++
 The functions reads in sparse delimited file.

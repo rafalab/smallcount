@@ -81,7 +81,7 @@ read_sparse_csv <- function(file, sep = ","){
 
 
 #' Read genes in columns
-#' @describeIn read_sparse_csv
+#' @describeIn read_sparse_csv reads csv with genes in the columns
 #' @param file character(1) path to a gzipped delimited file with counts; features are rows, cells are columns
 #' @param sep character(1) delimiter for fields (defaults to ',')
 #' @export
