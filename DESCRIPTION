@@ -1,10 +1,10 @@
 Package: smallcount
 Type: Package
 Title: Methods for Small Counts Stored in a Sparse Matrix 
-Version: 0.1.4
+Version: 0.1.5
 Author: Rafael A. Irizarry
 Depends: R (>= 3.5.0)
-Imports: Matrix, RSpectra, methods, inline, RcppArmadillo, Rcpp
+Imports: Matrix
 Suggests: scuttle, knitr, rmarkdown, bench
 LinkingTo: Rcpp, RcppArmadillo
 Maintainer: Rafael A. Irizarry <rafael_irizarry@dfci.harvard.edu>
