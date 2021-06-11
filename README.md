@@ -18,13 +18,16 @@ You can compute Pearson residuals followed by PCA like this:
 
 ```
 dim(tenx_subset)
-pc <- pca_poisson_residuals(tenx_subset)
+system.time({pc <- pca_poisson_residuals(tenx_subset)})
 ```
 
 This will give same results as 
 ```
 x <- t(as.matrix(tenx_subset))
+system.time({
 pc_old <- prcomp(x)
+})
+
 ```
 
 but about 50 times faster and using less memory.
