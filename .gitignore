@@ -1,0 +1,21 @@
+# System files
+.DS_Store
+Thumbs.db
+
+# RStudio project files
+.Rproj.user/
+*.Rproj
+.Rhistory
+.RData
+.Ruserdata
+
+# Package build files
+.Rbuildignore
+.Rinstignore
+.Renviron
+.Rprofile
+
+# Binary files
+*.o
+*.so
+
