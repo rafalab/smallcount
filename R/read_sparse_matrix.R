@@ -1,5 +1,6 @@
 #' Read a SparseMatrix object from a file
 #'
+#' @import Rcpp
 #' @import SparseArray
 #'
 #' @param file character(1) path to a sparse matrix file (.h5, .mtx, and .csv

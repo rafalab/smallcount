@@ -16,8 +16,8 @@ group_rates <- function(y, g){
 
   js <- as.numeric(g)
 
-  rowsums <- matrix(0, nrow(y),  length(n))
-  colsums <- vector("numeric", length(n))
+  rowsums <- matrix(0, nrow(y),  nlevels(g))
+  colsums <- vector("numeric", nlevels(g))
 
   for(j in 1:ncol(y)){
     ind <- (y@p[j]+1):y@p[j+1]

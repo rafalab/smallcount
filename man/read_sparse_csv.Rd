@@ -21,22 +21,24 @@ Read genes in columns
 }
 \section{Functions}{
 \itemize{
-\item \code{read_sparse_csv_transpose}: reads csv with genes in the columns
-}}
+\item \code{read_sparse_csv_transpose()}: reads csv with genes in the columns
 
+}}
 \note{
-The functions are prototypes. They need to be ported to C++
-The functions reads in sparse delimited file.
-There is one version for the case in which genes are in the rows,
-and one for the transpose case, when they are in the columns.
-The transpose case simpler and faster.
-For both cases we assume the first rows are the colums names and the first column are the rownames
+The functions are prototypes. They need to be ported to C++ The
+  functions reads in sparse delimited file. There is one version for the case
+  in which genes are in the rows, and one for the transpose case, when they
+  are in the columns. The transpose case simpler and faster. For both cases
+  we assume the first rows are the colums names and the first column are the
+  rownames
 }
 \examples{
 ## Original object
 data("tenx_subset")
-new <- read_sparse_csv(system.file("extdata/tenx_subset.csv.gz", package = "smallcount"))
+new <- read_sparse_csv(system.file(
+  "extdata/tenx_subset.csv.gz", package = "smallcount"))
 identical(new, tenx_subset)
-new <- read_sparse_csv_transpose(system.file("extdata/tenx_subset-transpose.csv.gz", package = "smallcount"))
+new <- read_sparse_csv_transpose(system.file(
+  "extdata/tenx_subset-transpose.csv.gz", package = "smallcount"))
 identical(new, tenx_subset)
 }
