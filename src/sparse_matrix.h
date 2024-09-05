@@ -56,6 +56,10 @@ struct SparseMatrix {
     // Returns a sparse matrix with the specified internal representation.
     // Only "coo" and "svt" are currently supported.
     static std::unique_ptr<SparseMatrix> create(const std::string &rep);
+
+   protected:
+    // Checks that the matrix entry is not out of bounds.
+    void checkValid(const MatrixData &entry);
 };
 
 // COO representation of a sparse matrix.

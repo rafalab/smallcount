@@ -1,7 +1,6 @@
 #include "mtx_file_reader.h"
 
-#include <stdlib.h>
-
+#include <cstdlib>
 #include <fstream>
 #include <optional>
 #include <string>
@@ -14,16 +13,6 @@ using namespace Rcpp;
 
 namespace smallcount {
 namespace {
-
-// Checks if a matrix entry is valid for a given matrix.
-void checkValid(const SparseMatrix &matrix, const MtxLine &entry) {
-    const int row = entry.row;
-    const int col = entry.col;
-    if (row <= 0 || row > matrix.nrow() || col <= 0 || col > matrix.ncol()) {
-        stop("Coordinate (%d, %d) is out of bounds for a %d x %d matrix", row,
-             col, matrix.nrow(), matrix.ncol());
-    }
-}
 
 // Parses a single line of an .mtx file.
 std::optional<MtxLine> parseMtxLine(const std::string &line, size_t line_num) {
@@ -62,7 +51,6 @@ void MtxFileReader::read(std::ifstream &file, SparseMatrix &matrix) {
             continue;
         }
         if (is_initialized) {
-            checkValid(matrix, *entry);
             matrix.addEntry(entry->data());
             non_zero_count++;
         } else {

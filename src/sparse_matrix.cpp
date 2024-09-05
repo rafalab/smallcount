@@ -35,6 +35,15 @@ std::unique_ptr<SparseMatrix> SparseMatrix::create(const std::string &rep) {
     return nullptr;
 }
 
+void SparseMatrix::checkValid(const MatrixData &entry) {
+    const int row = entry.row;
+    const int col = entry.col;
+    if (row <= 0 || row > nrow() || col <= 0 || col > ncol()) {
+        stop("Coordinate (%d, %d) is out of bounds for a %d x %d matrix", row,
+             col, nrow(), ncol());
+    }
+}
+
 // -----------------------------------------------------------------------------
 // COO Sparse Matrix
 // -----------------------------------------------------------------------------
@@ -46,6 +55,7 @@ void CooSparseMatrix::init(const MatrixMetadata &m) {
 }
 
 void CooSparseMatrix::addEntry(const MatrixData &entry) {
+    checkValid(entry);
     rows.push_back(entry.row);
     cols.push_back(entry.col);
     vals.push_back(entry.val);
@@ -77,6 +87,7 @@ void SvtSparseMatrix::init(const MatrixMetadata &m) {
 }
 
 void SvtSparseMatrix::addEntry(const MatrixData &entry) {
+    checkValid(entry);
     // Shift row and column by -1 for 0-based indexing.
     const int col = entry.col - 1;
     if (svt[col].empty()) {

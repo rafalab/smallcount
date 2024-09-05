@@ -14,7 +14,7 @@ class MtxFileReader {
     static void read(std::ifstream &file, SparseMatrix &matrix);
 
    private:
-    // Static class. Should not be instantiated externally.
+    // Static class. Should not be instantiated.
     MtxFileReader() = default;
 };
 

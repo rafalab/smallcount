@@ -57,16 +57,6 @@ std::vector<uint64_t> getDimensions(hid_t file) {
     return dims;
 }
 
-// Checks if a matrix entry is valid for a given matrix.
-void checkValid(const SparseMatrix &matrix, const MatrixData &entry) {
-    const int row = entry.row;
-    const int col = entry.col;
-    if (row <= 0 || row > matrix.nrow() || col <= 0 || col > matrix.ncol()) {
-        stop("Coordinate (%d, %d) is out of bounds for a %d x %d matrix", row,
-             col, matrix.nrow(), matrix.ncol());
-    }
-}
-
 }  // namespace
 
 void Hdf5FileReader::read(hid_t file, SparseMatrix &matrix) {
@@ -100,7 +90,6 @@ void Hdf5FileReader::read(hid_t file, SparseMatrix &matrix) {
             MatrixData{.row = static_cast<int>(nz_rows[i]) + 1,
                        .col = col + 1,
                        .val = static_cast<int>(nz_data[i])};
-        checkValid(matrix, entry);
         matrix.addEntry(entry);
     }
 }
