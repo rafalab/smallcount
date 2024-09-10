@@ -8,13 +8,13 @@ read_sparse_matrix(file, representation = "svt")
 }
 \arguments{
 \item{file}{character(1) path to a sparse matrix file (.h5, .mtx, and .csv
-extensions are supported).}
+extensions are supported, compressed or decompressed).}
 
 \item{representation}{character(1) internal SparseMatrix representation,
-either "svt" or "coo". (Default "svt")}
+either "svt" or "coo". (Default "svt").}
 }
 \value{
-SparseMatrix object
+SparseMatrix object.
 }
 \description{
 Read a SparseMatrix object from a file

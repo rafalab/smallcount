@@ -15,7 +15,7 @@ test_that("Reads .h5 file", {
 })
 
 test_that("Reads .mtx file", {
-  test_file <- test_path("testdata", "small_dense_square.mtx")
+  test_file <- test_path("testdata", "small_dense_square.tbz2")
   expected_dim <- c(3, 3)
   expected_matrix <- t(matrix(c(1:9), nrow=3, ncol=3))
 
@@ -31,7 +31,7 @@ test_that("Reads .mtx file", {
 })
 
 test_that("Reads .csv file", {
-  test_file <- test_path("testdata", "small_dense_square.csv")
+  test_file <- test_path("testdata", "small_dense_square.tar.gz")
   expected_dim <- c(3, 3)
   expected_matrix <- t(matrix(c(1:9), nrow=3, ncol=3))
 
