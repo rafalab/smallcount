@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "Rcpp.h"
 
@@ -22,6 +23,17 @@ static constexpr int kSvtRowInd = 0;  // Index of row information in SVT entry
 static constexpr int kSvtValInd = 1;  // Index of value information in SVT entry
 
 static constexpr char kDim[] = "dim";
+static constexpr char kDimNames[] = "dimnames";
+
+List createDimNamesList(std::vector<std::string> row_names,
+                        std::vector<std::string> col_names) {
+    List dim_names = List(2);
+    if (!row_names.empty() && !col_names.empty()) {
+        dim_names[0] = wrap(std::move(row_names));
+        dim_names[1] = wrap(std::move(col_names));
+    }
+    return dim_names;
+}
 
 }  // namespace
 
@@ -67,6 +79,8 @@ SEXP CooSparseMatrix::toRcpp() {
         createCoordsMatrix(std::move(rows), std::move(cols));
     obj.slot(kNonZeroData) = wrap(std::move(vals));
     obj.slot(kDim) = IntegerVector({nrow(), ncol()});
+    obj.slot(kDimNames) = createDimNamesList(std::move(metadata.row_names),
+                                             std::move(metadata.col_names));
     return obj;
 }
 
@@ -104,6 +118,8 @@ SEXP SvtSparseMatrix::toRcpp() {
         obj.slot(kSvt) = createSvtList(std::move(svt));
     }
     obj.slot(kDim) = IntegerVector({nrow(), ncol()});
+    obj.slot(kDimNames) = createDimNamesList(std::move(metadata.row_names),
+                                             std::move(metadata.col_names));
     obj.slot(kType) = kInteger;
     return obj;
 }

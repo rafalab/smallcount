@@ -6,13 +6,31 @@
 #include <string>
 
 #include "Rcpp.h"
-#include "mtx_file.h"
 #include "sparse_matrix.h"
 
 using namespace Rcpp;
 
 namespace smallcount {
 namespace {
+
+// Line of data/metadata in an .mtx file.
+// Typically corresponds to a non-zero entry in a sparse matrix.
+// Contains matrix metadata for the first line of the .mtx file.
+struct MtxLine {
+    // Entry row index (or total number of rows).
+    int row;
+    // Entry column index (or total number of columns).
+    int col;
+    // Entry value (or total number of non-zero values).
+    size_t val;
+
+    MatrixData data() const {
+        return {.row = row, .col = col, .val = static_cast<int>(val)};
+    }
+    MatrixMetadata metadata() const {
+        return {.nrow = row, .ncol = col, .nval = val};
+    }
+};
 
 // Parses a single line of an .mtx file.
 std::optional<MtxLine> parseMtxLine(const std::string &line, size_t line_num) {

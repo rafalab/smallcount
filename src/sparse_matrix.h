@@ -25,6 +25,9 @@ struct MatrixMetadata {
     int nrow;     // Number of rows
     int ncol;     // Number of columns
     size_t nval;  // Number of non-zero values
+
+    std::vector<std::string> row_names;  // Row names
+    std::vector<std::string> col_names;  // Column names
 };
 
 // Non-zero entry in a sparse matrix.
@@ -36,16 +39,6 @@ struct MatrixData {
 
 // Abstract sparse matrix struct.
 struct SparseMatrix {
-    // Metadata for the number of rows, columns, and non-zero values.
-    // Default initialization is an empty 1 x 1 matrix.
-    MatrixMetadata metadata = {.nrow = 1, .ncol = 1, .nval = 0};
-
-    int nrow() const { return metadata.nrow; }
-    int ncol() const { return metadata.ncol; }
-    size_t nval() const { return metadata.nval; }
-
-    virtual ~SparseMatrix() = default;
-
     // Initializes the matrix with the given metadata.
     virtual void init(const MatrixMetadata &metadata) = 0;
     // Adds a non-zero data entry to the matrix.
@@ -57,7 +50,17 @@ struct SparseMatrix {
     // Only "coo" and "svt" are currently supported.
     static std::unique_ptr<SparseMatrix> create(const std::string &rep);
 
+    int nrow() const { return metadata.nrow; }
+    int ncol() const { return metadata.ncol; }
+    size_t nval() const { return metadata.nval; }
+
+    virtual ~SparseMatrix() = default;
+
    protected:
+    // Metadata for the number of rows, columns, and non-zero values.
+    // Default initialization is an empty 1 x 1 matrix.
+    MatrixMetadata metadata = {.nrow = 1, .ncol = 1, .nval = 0};
+
     // Checks that the matrix entry is not out of bounds.
     void checkValid(const MatrixData &entry);
 };
