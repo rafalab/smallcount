@@ -65,6 +65,13 @@ pca_poisson_residuals <- function(y, k = 50, rate = NULL, n = NULL){
 #' @param n Total counts in each column.
 #'
 #' @importFrom SparseArray colSums rowSums
+#' 
+#' @examples
+#' data(tenx_subset_new)
+#' dim(tenx_subset_new)
+#' system.time({pc <- pca_poisson_residuals_new(tenx_subset_new, k = 10)})
+#' plot(pc$x[,1:2])
+#' barplot(pc$sdev)
 #' @export
 pca_poisson_residuals_new <- function(y, k = 50, rate = NULL, n = NULL) {
   if (!is(y, "SparseMatrix")) stop("y must be class SparseMatrix")

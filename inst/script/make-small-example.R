@@ -1,4 +1,5 @@
 library(Matrix)
+library(SparseArray)
 library(TENxBrainData)
 tenx <- TENxBrainData()
 
@@ -21,6 +22,7 @@ fn <- "inst/extdata/tenx_subset.mtx"
 writeMM(tenx_subset, file=fn)
 system(paste("gzip",fn))
 
-
 save(tenx_subset, file= "data/tenx_subset.rda", compress = "xz")
 
+tenx_subset_new <- as(m, "SparseArray")
+save(tenx_subset_new, file= "data/tenx_subset_new.rda", compress = "xz")

@@ -18,3 +18,10 @@ pca_poisson_residuals_new(y, k = 50, rate = NULL, n = NULL)
 \description{
 Principal Component Analysis on Pearson residuals
 }
+\examples{
+data(tenx_subset_new)
+dim(tenx_subset_new)
+system.time({pc <- pca_poisson_residuals_new(tenx_subset_new, k = 10)})
+plot(pc$x[,1:2])
+barplot(pc$sdev)
+}
