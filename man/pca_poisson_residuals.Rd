@@ -7,7 +7,7 @@
 pca_poisson_residuals(y, k = 50, rate = NULL, n = NULL)
 }
 \arguments{
-\item{y}{dgCMatrix sparse Matrix.}
+\item{y}{Sparse matrix (can be a base matrix, dgCMatrix, or SparseMatrix).}
 
 \item{k}{Number of principal components to return.}
 

@@ -20,46 +20,7 @@ compute_pca <- function(rtr, y, rate, k) {
 
 #' Principal Component Analysis on Pearson residuals
 #'
-#' @param y dgCMatrix sparse Matrix.
-#' @param k Number of principal components to return.
-#' @param rate Row-wise rates.
-#' @param n Total counts in each column.
-#'
-#' @importFrom Matrix colSums rowSums tcrossprod
-#'
-#' @examples
-#' data(tenx_subset)
-#' dim(tenx_subset)
-#' system.time({pc <- pca_poisson_residuals(tenx_subset, k = 10)})
-#' plot(pc$x[,1:2])
-#' barplot(pc$sdev)
-#' @export
-pca_poisson_residuals <- function(y, k = 50, rate = NULL, n = NULL){
-  if (!is(y, "dgCMatrix")) stop("y must be class dgCMatrix")
-
-  if (is.null(n)) n <- Matrix::colSums(y)
-  total <- sum(n)
-  if (is.null(rate)) rate <- Matrix::rowSums(y)
-  ind <- which(rate>0L) ##before dividing to obtain rate, keep index of all 0 rows
-  rate <- rate / total
-
-  ## rep(n, diff(y@p)) * rate[y@i+1] is mu_hat
-  y@x <- y@x / sqrt(rep(n, diff(y@p)) * rate[y@i+1])
-  y2 <- Matrix::tcrossprod(y) ## this is slowest step, but no way around it i don't think
-
-  uy <- matrix(0, length(rate), length(rate))
-  uy[ind, ind] <- outer(1/sqrt(rate[ind]), sqrt(rate[ind])) * rate[ind]*total
-
-  u2 <- total * outer(sqrt(rate), sqrt(rate))
-
-  ## cross product of residuals
-  rtr <- as.matrix(y2) - 2*uy + u2
-  compute_pca(rtr, y, rate, k)
-}
-
-#' Principal Component Analysis on Pearson residuals
-#'
-#' @param y SparseMatrix object.
+#' @param y Sparse matrix (can be a base matrix, dgCMatrix, or SparseMatrix).
 #' @param k Number of principal components to return.
 #' @param rate Row-wise rates.
 #' @param n Total counts in each column.
@@ -67,14 +28,18 @@ pca_poisson_residuals <- function(y, k = 50, rate = NULL, n = NULL){
 #' @importFrom SparseArray colSums rowSums
 #' 
 #' @examples
-#' data(tenx_subset_new)
-#' dim(tenx_subset_new)
-#' system.time({pc <- pca_poisson_residuals_new(tenx_subset_new, k = 10)})
+#' data(tenx_subset)
+#' dim(tenx_subset)
+#' system.time({pc <- pca_poisson_residuals(tenx_subset, k = 10)})
 #' plot(pc$x[,1:2])
 #' barplot(pc$sdev)
 #' @export
-pca_poisson_residuals_new <- function(y, k = 50, rate = NULL, n = NULL) {
-  if (!is(y, "SparseMatrix")) stop("y must be class SparseMatrix")
+pca_poisson_residuals <- function(y, k = 50, rate = NULL, n = NULL) {
+  if (is(y, "matrix") || is(y, "dgCMatrix")) {
+    y <- as(y, "SparseMatrix")
+  } else if (!is(y, "SparseMatrix")) {
+    stop("y must be class matrix, dgCMatrix, or SparseMatrix")
+  }
 
   n <- if (is.null(n)) colSums(y) else n
   rate <- if (is.null(rate)) rowSums(y) else rate

@@ -42,20 +42,6 @@ validate_principal_components <- function(pc_old, pc_new, tol = TOL) {
   expect_lt(max_abs_diff(x_new, x_old), tol)
 }
 
-test_that("Computes PCA on Pearson residuals of dgCMatrix", {
-  y <- generate_data()
-
-  residuals <- compute_pearson_residuals(y)
-  pc_old <- prcomp(t(residuals), center = FALSE)
-
-  sparse_y <- as(y, "dgCMatrix")
-  # Expect warning because all principal components are computed.
-  expect_warning(pc_new <- pca_poisson_residuals(sparse_y, k = NROW),
-                 "all eigenvalues")
-
-  validate_principal_components(pc_old, pc_new)
-})
-
 test_that("Computes PCA on Pearson residuals of SparseMatrix", {
   y <- generate_data()
 
@@ -64,7 +50,7 @@ test_that("Computes PCA on Pearson residuals of SparseMatrix", {
 
   sparse_y <- as(y, "SparseMatrix")
   # Expect warning because all principal components are computed.
-  expect_warning(pc_new <- pca_poisson_residuals_new(sparse_y, k = NROW),
+  expect_warning(pc_new <- pca_poisson_residuals(sparse_y, k = NROW),
                  "all eigenvalues")
 
   validate_principal_components(pc_old, pc_new)
