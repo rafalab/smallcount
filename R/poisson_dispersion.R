@@ -4,6 +4,7 @@
 #' @param rate The rowwise rates.
 #' @param n The total counts in each column.
 #'
+#' @import methods
 #' @importFrom Matrix rowSums colSums
 #' @export
 #'

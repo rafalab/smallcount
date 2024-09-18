@@ -25,6 +25,7 @@ compute_pca <- function(rtr, y, rate, k) {
 #' @param rate Row-wise rates.
 #' @param n Total counts in each column.
 #'
+#' @import methods
 #' @importFrom SparseArray colSums rowSums
 #' 
 #' @examples

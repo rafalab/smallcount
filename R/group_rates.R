@@ -3,6 +3,7 @@
 #' @param y A tgCMatrix sparse Matrix.
 #' @param g A factor defining the group for each column.
 #'
+#' @import methods
 #' @export
 #'
 group_rates <- function(y, g){

@@ -49,6 +49,11 @@ get_decompressed_matrix_file <- function(file) {
 #'   either "svt" or "coo". (Default "svt").
 #'
 #' @return SparseMatrix object.
+#' @examples
+#' data("tenx_subset_new")  # Original dataset
+#' new <- read_sparse_matrix(system.file(
+#'   "extdata/tenx_subset.csv.gz", package = "smallcount"))
+#' identical(new, tenx_subset_new)
 #' @export
 #' @useDynLib smallcount
 read_sparse_matrix <- function(file, representation = "svt") {
