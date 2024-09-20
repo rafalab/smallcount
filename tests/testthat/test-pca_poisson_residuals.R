@@ -29,7 +29,7 @@ validate_principal_components <- function(pc_old, pc_new, tol = TOL) {
 
   # Principal components are equal up to sign flips, so compare absolute values.
   max_abs_diff <- function(x1, x2) {
-    max(abs(x1) - abs(x2))
+    max(abs(abs(x1) - abs(x2)))
   }
   expect_equal(dim(pc_old$rotation), c(NROW, NROW))
   expect_equal(dim(pc_old$rotation), dim(pc_new$rotation))
@@ -42,15 +42,37 @@ validate_principal_components <- function(pc_old, pc_new, tol = TOL) {
   expect_lt(max_abs_diff(x_new, x_old), tol)
 }
 
+test_that("Throws error for invalid residual type", {
+  y <- generate_data()
+  expect_error(pc <- pca_poisson_residuals(y, k = NROW, residual = "foo"),
+               "Invalid residual type")
+})
+
 test_that("Computes PCA on Pearson residuals of SparseMatrix", {
   y <- generate_data()
 
   residuals <- compute_pearson_residuals(y)
   pc_old <- prcomp(t(residuals), center = FALSE)
 
-  sparse_y <- as(y, "SparseMatrix")
   # Expect warning because all principal components are computed.
-  expect_warning(pc_new <- pca_poisson_residuals(sparse_y, k = NROW),
+  expect_warning(
+    pc_new <- pca_poisson_residuals(y, k = NROW, residual = "pearson"),
+    "all eigenvalues"
+  )
+
+  validate_principal_components(pc_old, pc_new)
+})
+
+test_that("Computes PCA on raw residuals of SparseMatrix", {
+  y <- generate_data()
+
+  n <- colSums(y)
+  rate <- rowSums(y) / sum(n)
+  residuals <- y - outer(rate, n)
+  pc_old <- prcomp(t(residuals), center = FALSE)
+
+  # Expect warning because all principal components are computed.
+  expect_warning(pc_new <- pca_poisson_residuals(y, k = NROW),
                  "all eigenvalues")
 
   validate_principal_components(pc_old, pc_new)

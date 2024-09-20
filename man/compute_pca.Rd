@@ -2,19 +2,20 @@
 % Please edit documentation in R/pca_poisson_residuals.R
 \name{compute_pca}
 \alias{compute_pca}
-\title{Computes PCA for a residual matrix from its cross product}
+\title{Computes the eigendecomposition of r \%*\% t(r) for a residual matrix r}
 \usage{
-compute_pca(rtr, y, rate, k)
+compute_pca(rtr, k, y, offset1 = NULL, offset2 = NULL)
 }
 \arguments{
-\item{rtr}{Cross product of residual matrix.}
-
-\item{y}{Original sparse matrix, scaled by inverse standard deviation.}
-
-\item{rate}{Row-wise rates.}
+\item{rtr}{Cross product of residual matrix r = y - offset1 \%*\% offset2.}
 
 \item{k}{Number of principal components to return.}
+
+\item{y}{Sparse count matrix, potentially scaled.}
+
+\item{offset1, offset2}{Vectors whose product is the difference between y and
+the residual matrix.}
 }
 \description{
-Computes PCA for a residual matrix from its cross product
+Computes the eigendecomposition of r \%*\% t(r) for a residual matrix r
 }

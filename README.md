@@ -18,16 +18,21 @@ You can compute Pearson residuals followed by PCA like this:
 
 ```
 dim(tenx_subset)
-system.time({pc <- pca_poisson_residuals(tenx_subset)})
+system.time({pc <- pca_poisson_residuals(tenx_subset, residual = "pearson")})
 ```
 
 This will give same results as 
 ```
-x <- t(as.matrix(tenx_subset))
+safe_divide <- function(a, b) {
+    ifelse(b == 0, 0, a / b)
+}
 system.time({
-pc_old <- prcomp(x)
+    n <- colSums(tenx_subset)
+    rate <- rowSums(tenx_subset) / sum(n)
+    rate_n <- outer(rate, n)
+    pearson_residuals <- safe_divide(tenx_subset - rate_n, sqrt(rate_n))
+    pc_old <- prcomp(t(pearson_residuals), center = FALSE, rank. = 50)
 })
-
 ```
 
 but about 50 times faster and using less memory.
