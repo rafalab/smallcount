@@ -1,39 +1,29 @@
-#' Rowwise rates for groups
+#' Row-wise rates for groups
 #'
-#' @param y A tgCMatrix sparse Matrix.
-#' @param g A factor defining the group for each column.
+#' @param y Sparse matrix (can be a base matrix, dgCMatrix, or SparseMatrix).
+#' @param g Factor specifying the group for each column.
 #'
 #' @import methods
+#' @importFrom SparseArray nzvals nzwhich
 #' @export
-#'
-group_rates <- function(y, g){
-
-  if(!is(y, "dgCMatrix")) stop("y must be class dgCMatrix")
+group_rates <- function(y, g) {
+  y <- convert_to_sparse(y)
 
   if(!is.factor(g)){
     warning("Coercing g into a factor")
     g <- as.factor(g)
   }
 
-  js <- as.numeric(g)
+  # Compute row sums for each group
+  nz_ind <- nzwhich(y, arr.ind = TRUE)
+  group_sums <- tapply(nzvals(y),
+                       list(factor(nz_ind[, 1], levels=1:nrow(y)),
+                            g[nz_ind[, 2]]),
+                       sum, default = 0)
 
-  rowsums <- matrix(0, nrow(y),  nlevels(g))
-  colsums <- vector("numeric", nlevels(g))
-
-  for(j in 1:ncol(y)){
-    ind <- (y@p[j]+1):y@p[j+1]
-    real_ind <- y@i[ind] + 1
-    k <- js[j]
-    x <- y@x[ind]
-    rowsums[real_ind, k] <- rowsums[real_ind, k] + x
-    colsums[k] <- colsums[k] + sum(x)
-  }
-
-  rowsums <- sweep(rowsums, 2, colsums, FUN = "/")
-  colnames(rowsums) <- levels(g)
-  rownames(rowsums) <- rownames(y)
-
-  return(rowsums)
-
+  # Standardize column sums to 1
+  rates <- sweep(group_sums, 2, colSums(group_sums), FUN = safe_divide)
+  colnames(rates) <- levels(g)
+  rownames(rates) <- rownames(y)
+  return(rates)
 }
-

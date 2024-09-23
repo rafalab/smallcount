@@ -2,15 +2,15 @@
 % Please edit documentation in R/group_rates.R
 \name{group_rates}
 \alias{group_rates}
-\title{Rowwise rates for groups}
+\title{Row-wise rates for groups}
 \usage{
 group_rates(y, g)
 }
 \arguments{
-\item{y}{A tgCMatrix sparse Matrix.}
+\item{y}{Sparse matrix (can be a base matrix, dgCMatrix, or SparseMatrix).}
 
-\item{g}{A factor defining the group for each column.}
+\item{g}{Factor specifying the group for each column.}
 }
 \description{
-Rowwise rates for groups
+Row-wise rates for groups
 }

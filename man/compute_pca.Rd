@@ -2,7 +2,7 @@
 % Please edit documentation in R/pca_poisson_residuals.R
 \name{compute_pca}
 \alias{compute_pca}
-\title{Computes the eigendecomposition of r \%*\% t(r) for a residual matrix r}
+\title{Compute the eigendecomposition of r \%*\% t(r) for a residual matrix r}
 \usage{
 compute_pca(rtr, k, y, offset1 = NULL, offset2 = NULL)
 }
@@ -17,5 +17,5 @@ compute_pca(rtr, k, y, offset1 = NULL, offset2 = NULL)
 the residual matrix.}
 }
 \description{
-Computes the eigendecomposition of r \%*\% t(r) for a residual matrix r
+Compute the eigendecomposition of r \%*\% t(r) for a residual matrix r
 }

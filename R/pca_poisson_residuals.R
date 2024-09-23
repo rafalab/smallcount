@@ -20,11 +20,7 @@
 #' @export
 pca_poisson_residuals <- function(y, k = 50, rate = NULL, n = NULL,
                                   residual = "raw") {
-  if (is(y, "matrix") || is(y, "dgCMatrix")) {
-    y <- as(y, "SparseMatrix")
-  } else if (!is(y, "SparseMatrix")) {
-    stop("y must be a base matrix, dgCMatrix, or SparseMatrix")
-  }
+  y <- convert_to_sparse(y)
 
   n <- if (is.null(n)) colSums(y) else n
   rate <- if (is.null(rate)) rowSums(y) else rate
@@ -56,6 +52,8 @@ pca_poisson_raw_residuals <- function(y, k, rate, n) {
 #' Principal component analysis on Pearson residuals
 #'
 #' @inheritParams pca_poisson_raw_residuals
+#' 
+#' @importFrom SparseArray nzwhich
 pca_poisson_pearson_residuals <- function(y, k, rate, n) {
   sqrt_rate <- sqrt(rate)
   nz_ind <- nzwhich(y, arr.ind = TRUE)
@@ -67,7 +65,7 @@ pca_poisson_pearson_residuals <- function(y, k, rate, n) {
   compute_pca(rtr, k, y, sqrt_rate, sqrt(n))
 }
 
-#' Computes the eigendecomposition of r \%*\% t(r) for a residual matrix r
+#' Compute the eigendecomposition of r \%*\% t(r) for a residual matrix r
 #'
 #' @param rtr Cross product of residual matrix r = y - offset1 \%*\% offset2.
 #' @param k Number of principal components to return.
