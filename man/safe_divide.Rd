@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{safe_divide}
 \alias{safe_divide}
-\title{Divide a by b, resulting in zero if b is zero}
+\title{Divide a by b, returning zero if b is zero}
 \usage{
 safe_divide(a, b)
 }
@@ -12,5 +12,5 @@ safe_divide(a, b)
 \item{b}{Denominator}
 }
 \description{
-Divide a by b, resulting in zero if b is zero
+Divide a by b, returning zero if b is zero
 }

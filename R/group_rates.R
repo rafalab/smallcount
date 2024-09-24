@@ -3,7 +3,6 @@
 #' @param y Sparse matrix (can be a base matrix, dgCMatrix, or SparseMatrix).
 #' @param g Factor specifying the group for each column.
 #'
-#' @import methods
 #' @importFrom SparseArray nzvals nzwhich
 #' @export
 group_rates <- function(y, g) {

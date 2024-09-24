@@ -1,8 +1,8 @@
 #' Poisson Deviance
 #'
-#' @param y A tgCMatrix sparse Matrix.
-#' @param rate The rowwise rates.
-#' @param n The total counts in each column.
+#' @param y dgCMatrix sparse Matrix.
+#' @param rate Row-wise rates.
+#' @param n Total counts in each column.
 #'
 #' @import methods
 #' @importFrom Matrix colSums rowSums
@@ -12,9 +12,7 @@
 #' data("tenx_subset")
 #' dev <- poisson_deviance(tenx_subset)
 #' hist(dev, nclass = 50)
-
 poisson_deviance <- function(y, rate = NULL, n = NULL){
-
   if(!is(y, "dgCMatrix")) stop("y must be class dgCMatrix")
 
   if(is.null(n)) n <- Matrix::colSums(y)
@@ -37,4 +35,22 @@ poisson_deviance <- function(y, rate = NULL, n = NULL){
   }
 
   return(2 * Matrix::rowSums(y) + 2 * s)
+}
+
+#' Poisson Deviance
+#'
+#' @param y Sparse matrix (can be a base matrix, dgCMatrix, or SparseMatrix).
+#' @param rate Row-wise rates.
+#' @param n Total counts in each column.
+#'
+#' @importFrom SparseArray rowSums nzwhich
+#' @export
+poisson_deviance_new <- function(y, rate = NULL, n = NULL) {
+  y <- convert_to_sparse(y)
+  n <- colsums_with_default(y, n)
+  rate <- row_rates_with_default(y, rate)
+
+  nz_ind <- nzwhich(y, arr.ind = TRUE)
+  y[nz_ind] <- y[nz_ind] * log(y[nz_ind] / (rate[nz_ind[, 1]] * n[nz_ind[, 2]]))
+  2 * rowSums(y)
 }

@@ -6,9 +6,6 @@
 #' @param n Total counts in each column.
 #' @param residual Residual type ("raw" or "pearson"). Default raw.
 #'
-#' @import methods
-#' @importFrom SparseArray colSums rowSums
-#'
 #' @examples
 #' data(tenx_subset)
 #' dim(tenx_subset)
@@ -21,10 +18,8 @@
 pca_poisson_residuals <- function(y, k = 50, rate = NULL, n = NULL,
                                   residual = "raw") {
   y <- convert_to_sparse(y)
-
-  n <- if (is.null(n)) colSums(y) else n
-  rate <- if (is.null(rate)) rowSums(y) else rate
-  rate <- rate / sum(n)
+  n <- colsums_with_default(y, n)
+  rate <- row_rates_with_default(y, rate)
 
   if (residual == "raw") {
     pca_poisson_raw_residuals(y, k, rate, n)

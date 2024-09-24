@@ -1,6 +1,8 @@
 #' Convert a sparse matrix to a SparseMatrix object
 #'
 #' @param y Sparse matrix (can be a base matrix, dgCMatrix, or SparseMatrix).
+#'
+#' @import methods
 convert_to_sparse <- function(y) {
   if (is(y, "matrix") || is(y, "dgCMatrix")) {
     y <- as(y, "SparseMatrix")
@@ -10,7 +12,34 @@ convert_to_sparse <- function(y) {
   return(y)
 }
 
-#' Divide a by b, resulting in zero if b is zero
+#' Return a non-null default value or compute column sums
+#'
+#' @param y SparseMatrix object
+#' @param default Default column sums
+#'
+#' @importFrom SparseArray colSums
+colsums_with_default <- function(y, default) {
+  if (!is.null(default)) {
+    return(default)
+  }
+  colSums(y)
+}
+
+#' Return a non-null default value or compute row-wise rates
+#'
+#' @param y SparseMatrix object
+#' @param default Default row-wise rates
+#'
+#' @importFrom SparseArray colSums
+row_rates_with_default <- function(y, default) {
+  if (!is.null(default)) {
+    return(default)
+  }
+  rsums <- rowSums(y)
+  rsums / sum(rsums)
+}
+
+#' Divide a by b, returning zero if b is zero
 #'
 #' @param a Numerator
 #' @param b Denominator
