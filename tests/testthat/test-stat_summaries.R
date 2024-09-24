@@ -56,7 +56,7 @@ test_that("Computes deviance for 1D Poisson data", {
   counts <- generate_data(nrow = 1, ncol = ncol)
   # Calculate deviance, giving equal weight to each column
   n <- rep(sum(counts) / ncol, ncol)
-  deviance <- poisson_deviance_new(counts, n = n)
+  deviance <- poisson_deviance(counts, n = n)
 
   poisson_glm <- glm(t(counts) ~ 1, family = poisson)
   expected_deviance <- poisson_glm$null.deviance
@@ -65,12 +65,10 @@ test_that("Computes deviance for 1D Poisson data", {
 
 test_that("Computes deviance for Poisson matrix", {
   counts <- generate_data(nrow = 50, ncol = 100)
-  deviance <- poisson_deviance_new(counts)
-  deviance_old <- poisson_deviance(as(counts, "dgCMatrix"))
+  deviance <- poisson_deviance(counts)
 
   expected_deviance <- brute_force_deviance(counts)
   expect_equal(deviance, expected_deviance)
-  expect_equal(deviance_old, expected_deviance)
 })
 
 test_that("Computes dispersion for 1D Poisson data", {
@@ -78,7 +76,7 @@ test_that("Computes dispersion for 1D Poisson data", {
   counts <- generate_data(nrow = 1, ncol = ncol)
   # Calculate dispersion, giving equal weight to each column
   n <- rep(sum(counts) / ncol, ncol)
-  dispersion <- poisson_dispersion_new(counts, n = n)
+  dispersion <- poisson_dispersion(counts, n = n)
 
   quasi_poisson_glm <- glm(t(counts) ~ 1, family = quasipoisson)
   expected_dispersion <- summary(quasi_poisson_glm)$dispersion
@@ -87,7 +85,7 @@ test_that("Computes dispersion for 1D Poisson data", {
 
 test_that("Computes dispersion for Poisson matrix", {
   counts <- generate_data(nrow = 50, ncol = 100)
-  dispersion <- poisson_dispersion_new(counts)
+  dispersion <- poisson_dispersion(counts)
 
   expected_dispersion <- brute_force_dispersion(counts)
   expect_equal(dispersion, expected_dispersion)

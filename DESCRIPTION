@@ -6,7 +6,6 @@ Author: Rafael A. Irizarry
 Depends: R (>= 3.5.0)
 biocViews:
 Imports: 
-    Matrix,
     methods,
     R.utils,
     Rcpp (>= 1.0.13),

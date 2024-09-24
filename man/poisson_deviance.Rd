@@ -7,7 +7,7 @@
 poisson_deviance(y, rate = NULL, n = NULL)
 }
 \arguments{
-\item{y}{dgCMatrix sparse Matrix.}
+\item{y}{Sparse matrix (can be a base matrix, dgCMatrix, or SparseMatrix).}
 
 \item{rate}{Row-wise rates.}
 

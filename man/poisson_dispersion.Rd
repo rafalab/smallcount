@@ -7,7 +7,7 @@
 poisson_dispersion(y, rate = NULL, n = NULL)
 }
 \arguments{
-\item{y}{dgCMatrix sparse Matrix.}
+\item{y}{Sparse matrix (can be a base matrix, dgCMatrix, or SparseMatrix).}
 
 \item{rate}{Row-wise rates.}
 
@@ -15,4 +15,9 @@ poisson_dispersion(y, rate = NULL, n = NULL)
 }
 \description{
 Compute Poisson Dispersion
+}
+\examples{
+data("tenx_subset")
+disp <- poisson_dispersion(tenx_subset)
+hist(disp, nclass = 50)
 }

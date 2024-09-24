@@ -13,9 +13,6 @@ extensions are supported, compressed or decompressed).}
 \item{representation}{character(1) internal SparseMatrix representation,
 either "svt" or "coo". (Default "svt").}
 }
-\value{
-SparseMatrix object.
-}
 \description{
 Read a SparseMatrix object from a file
 }

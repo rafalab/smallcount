@@ -21,12 +21,13 @@ unzip_matrix_file <- function(file, unzip_func) {
 
 #' Unzip (and untar) a .(t)gz or .(t)bz2 sparse matrix file
 #' @note This function is a no-op for all other file extensions.
-#' @import R.utils
-#' @import tools
 #'
 #' @param file character(1) path to a potentially compressed sparse matrix file.
 #'
 #' @return character(1) path to unzipped file contents.
+#' 
+#' @import R.utils
+#' @import tools
 get_decompressed_matrix_file <- function(file) {
   output_file <- file
   compressed_file_ext <- tolower(tools::file_ext(file))
@@ -40,15 +41,14 @@ get_decompressed_matrix_file <- function(file) {
 
 #' Read a SparseMatrix object from a file
 #'
-#' @import Rcpp
-#' @import SparseArray
-#'
 #' @param file character(1) path to a sparse matrix file (.h5, .mtx, and .csv
 #'   extensions are supported, compressed or decompressed).
 #' @param representation character(1) internal SparseMatrix representation,
 #'   either "svt" or "coo". (Default "svt").
 #'
-#' @return SparseMatrix object.
+#' @import Rcpp
+#' @import SparseArray
+#'
 #' @examples
 #' data("tenx_subset_new")  # Original dataset
 #' new <- read_sparse_matrix(system.file(
