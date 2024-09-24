@@ -6,7 +6,7 @@ You can install like this:
 devtools::install_github("rafalab/smallcount")
 ```
 
-Make sure your matrix is of class `dgCMatrix`
+Make sure your matrix is of class `SVT_SparseMatrix`:
 
 ```
 library(smallcount)
@@ -21,16 +21,15 @@ dim(tenx_subset)
 system.time({pc <- pca_poisson_residuals(tenx_subset, residual = "pearson")})
 ```
 
-This will give same results as 
+This will give same results as:
 ```
+x <- as.matrix(tenx_subset)
 safe_divide <- function(a, b) {
     ifelse(b == 0, 0, a / b)
 }
 system.time({
-    n <- colSums(tenx_subset)
-    rate <- rowSums(tenx_subset) / sum(n)
-    rate_n <- outer(rate, n)
-    pearson_residuals <- safe_divide(tenx_subset - rate_n, sqrt(rate_n))
+    mu_hat <- outer(rowSums(x) / sum(x), colSums(x))
+    pearson_residuals <- safe_divide(x - mu_hat, sqrt(mu_hat))
     pc_old <- prcomp(t(pearson_residuals), center = FALSE, rank. = 50)
 })
 ```
@@ -40,11 +39,11 @@ but about 50 times faster and using less memory.
 
 ## Requirements
 
-The matrix should store raw counts not transformed values. Genes should be in the rows and cells in the columns. If stored as regular matrix, convert to sparse one like this:
+The matrix should store raw counts, not transformed values. Genes should be in the rows and cells in the columns. If stored as a regular matrix, convert to a sparse one like this:
 
 ```
-x <- matrix(rpois(1000000,0.1), 100, 1000)
-y <- as(x, "dgCMatrix")
+x <- matrix(rpois(100000, 0.1), 100, 1000)
+y <- as(x, "SparseMatrix")
 ```
 
 You can see the gains in memory consumption like this:

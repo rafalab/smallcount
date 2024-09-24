@@ -3,14 +3,14 @@
 \docType{data}
 \name{tenx_subset}
 \alias{tenx_subset}
-\title{Compressed csv file with TENx brain data subset, genes in rows}
+\title{Compressed TENx brain data subset, genes in rows}
 \format{
-dgCMatrix
+SparseMatrix
 }
 \usage{
 tenx_subset
 }
 \description{
-Compressed csv file with TENx brain data subset, genes in rows
+Compressed TENx brain data subset, genes in rows
 }
 \keyword{datasets}

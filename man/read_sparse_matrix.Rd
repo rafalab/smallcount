@@ -17,8 +17,8 @@ either "svt" or "coo". (Default "svt").}
 Read a SparseMatrix object from a file
 }
 \examples{
-data("tenx_subset_new")  # Original dataset
+data("tenx_subset")  # Original dataset
 new <- read_sparse_matrix(system.file(
   "extdata/tenx_subset.csv.gz", package = "smallcount"))
-identical(new, tenx_subset_new)
+identical(new, tenx_subset)
 }

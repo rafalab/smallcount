@@ -13,16 +13,10 @@ fn <- "inst/extdata/tenx_subset.csv"
 write.csv(m, file = fn, row.names = TRUE, quote = FALSE)
 system(paste("gzip",fn))
 
-fn <- "inst/extdata/tenx_subset-transpose.csv"
-write.csv(t(m), file = fn, row.names = TRUE, quote = FALSE)
-system(paste("gzip",fn))
-
-tenx_subset <- as(m, "dgCMatrix")
+tenx_subset_dgc <- as(m, "dgCMatrix")
 fn <- "inst/extdata/tenx_subset.mtx"
-writeMM(tenx_subset, file=fn)
+writeMM(tenx_subset_dgc, file=fn)
 system(paste("gzip",fn))
 
+tenx_subset <- as(m, "SparseMatrix")
 save(tenx_subset, file= "data/tenx_subset.rda", compress = "xz")
-
-tenx_subset_new <- as(m, "SparseArray")
-save(tenx_subset_new, file= "data/tenx_subset_new.rda", compress = "xz")
