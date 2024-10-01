@@ -1,4 +1,4 @@
-#' Compute Poisson Dispersion
+#' Poisson Dispersion
 #'
 #' @param y Sparse matrix (can be a base matrix, dgCMatrix, or SparseMatrix).
 #' @param rate Row-wise rates.

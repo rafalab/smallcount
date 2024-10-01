@@ -44,8 +44,8 @@ validate_principal_components <- function(pc_old, pc_new, tol = TOL) {
 
 test_that("Throws error for invalid residual type", {
   y <- generate_data()
-  expect_error(pc <- pca_poisson_residuals(y, k = NROW, residual = "foo"),
-               "Invalid residual type")
+  expect_error(pc <- poisson_pca(y, k = NROW, transform = "foo"),
+               "Invalid transform")
 })
 
 test_that("Computes PCA on Pearson residuals of SparseMatrix", {
@@ -56,7 +56,7 @@ test_that("Computes PCA on Pearson residuals of SparseMatrix", {
 
   # Expect warning because all principal components are computed.
   expect_warning(
-    pc_new <- pca_poisson_residuals(y, k = NROW, residual = "pearson"),
+    pc_new <- poisson_pca(y, k = NROW, transform = "pearson"),
     "all eigenvalues"
   )
 
@@ -72,8 +72,7 @@ test_that("Computes PCA on raw residuals of SparseMatrix", {
   pc_old <- prcomp(t(residuals), center = FALSE)
 
   # Expect warning because all principal components are computed.
-  expect_warning(pc_new <- pca_poisson_residuals(y, k = NROW),
-                 "all eigenvalues")
+  expect_warning(pc_new <- poisson_pca(y, k = NROW, center = c(TRUE, TRUE)), "all eigenvalues")
 
   validate_principal_components(pc_old, pc_new)
 })

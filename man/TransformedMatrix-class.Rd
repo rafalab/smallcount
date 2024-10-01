@@ -13,7 +13,7 @@ Transformed Count Matrix
 \item{\code{y}}{SparseMatrix object.}
 
 \item{\code{row_offset,col_offset}}{Vectors whose product
-`outer(row_offset, col_offset)` represents the residual between `y` and a
-dense transformation of `y` (e.g., row-centered `y`).}
+\code{outer(row_offset, col_offset)} represents the residual between \code{y} and a
+dense transformation of \code{y} (e.g., row-centered \code{y}).}
 }}
 

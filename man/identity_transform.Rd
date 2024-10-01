@@ -11,7 +11,7 @@ identity_transform(center = FALSE, scale = FALSE)
 Can be specified either as a vector of two logical values, specifying
 whether the rows/columns should be centered, respectively, or a single
 logical value specifying whether the columns should be centered (for
-consistency with [stats::prcomp()]).}
+consistency with \code{\link[stats:prcomp]{stats::prcomp()}}).}
 
 \item{scale}{Whether transformed rows should be scaled to have unit variance.}
 }

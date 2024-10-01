@@ -13,7 +13,7 @@ scaled_log1p_transform(coef, center = FALSE, scale = FALSE)
 Can be specified either as a vector of two logical values, specifying
 whether the rows/columns should be centered, respectively, or a single
 logical value specifying whether the columns should be centered (for
-consistency with [stats::prcomp()]).}
+consistency with \code{\link[stats:prcomp]{stats::prcomp()}}).}
 
 \item{scale}{Whether transformed rows should be scaled to have unit variance.}
 }
@@ -21,5 +21,5 @@ consistency with [stats::prcomp()]).}
 CountTransform object.
 }
 \description{
-Maps x to log(`coef` * x + 1).
+Maps x to log(\code{coef} * x + 1).
 }

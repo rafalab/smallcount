@@ -16,6 +16,7 @@ Description: Functions for performing common tasks in genomics data analysis of 
 License: Artistic-2.0
 Encoding: UTF-8
 LazyData: true
+Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 LinkingTo: 
     Rcpp

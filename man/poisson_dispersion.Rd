@@ -2,7 +2,7 @@
 % Please edit documentation in R/poisson_dispersion.R
 \name{poisson_dispersion}
 \alias{poisson_dispersion}
-\title{Compute Poisson Dispersion}
+\title{Poisson Dispersion}
 \usage{
 poisson_dispersion(y, rate = NULL, n = NULL)
 }
@@ -14,7 +14,7 @@ poisson_dispersion(y, rate = NULL, n = NULL)
 \item{n}{Total counts in each column.}
 }
 \description{
-Compute Poisson Dispersion
+Poisson Dispersion
 }
 \examples{
 data("tenx_subset")
