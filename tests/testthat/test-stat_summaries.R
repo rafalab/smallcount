@@ -23,7 +23,7 @@ brute_force_dispersion <- function(y) {
   n <- colSums(y)
   rate <- rowSums(y) / sum(n)
   mu <- outer(rate, n)
-  safe_log <- function(a, b) {
+  safe_divide <- function(a, b) {
     ifelse(b == 0, 0, a / b)
   }
   dispersion <- safe_divide((y - mu)^2, mu) / (ncol(y) - 1)

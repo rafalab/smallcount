@@ -2,7 +2,7 @@
 % Please edit documentation in R/poisson_pca.R
 \name{poisson_pca}
 \alias{poisson_pca}
-\title{Principal component analysis on Poisson data}
+\title{Principal Component Analysis on Poisson data}
 \usage{
 poisson_pca(y, k = 50, transform = NULL, center = FALSE, scale = FALSE)
 }
@@ -12,11 +12,12 @@ poisson_pca(y, k = 50, transform = NULL, center = FALSE, scale = FALSE)
 \item{k}{Number of principal components to return. Default 50.}
 
 \item{transform}{CountTransform object or character(1) specifying a
-transformation to apply to \code{y}. Arguments \code{center} and \code{scale} are only
-applied when \code{transform} is a character string. Accepted strings are:
-\code{"id"} (or \code{NULL}) for the trivial identity function, \code{"log1p"} for
-\code{log(x + 1)}, \code{"cpm_log1p"} for \code{log(x/1e6 + 1)}, and \code{"med_log1p"} for
-\code{log(x/med + 1)}, where \code{med = median(colSums(y))}.}
+transformation to apply to \code{y} before PCA. Arguments \code{center} and \code{scale}
+are only applied when \code{transform} is a character string for a non-residual
+transformation. Accepted strings are: \code{"pearson"} for Pearson residuals,
+\code{"deviance"} for deviance residuals, \code{"id"} (or \code{NULL}) for the identity
+function, \code{"log1p"} for \code{log(x + 1)}, \code{"cpm_log1p"} for \code{log(x/1e6 + 1)},
+and \code{"med_log1p"} for \code{log(x/median(colSums(y)) + 1)}.}
 
 \item{center}{Whether transformed data should be shifted to have mean zero.
 Can be specified either as a vector of two logical values, specifying
@@ -27,7 +28,7 @@ consistency with \code{\link[stats:prcomp]{stats::prcomp()}}).}
 \item{scale}{Whether transformed rows should be scaled to have unit variance.}
 }
 \description{
-Principal component analysis on Poisson data
+Principal Component Analysis on Poisson data
 }
 \examples{
 data(tenx_subset)
