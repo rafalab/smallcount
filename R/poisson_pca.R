@@ -7,6 +7,7 @@
 #'   and the residual matrix.
 #'
 #' @import RSpectra
+#' @noRd
 compute_pca <- function(rtr, k, y, offset1 = NULL, offset2 = NULL) {
   e <- RSpectra::eigs_sym(rtr, k = k)
   x <- crossprod(y, e$vectors)
@@ -22,6 +23,8 @@ compute_pca <- function(rtr, k, y, offset1 = NULL, offset2 = NULL) {
 #' @param k Number of principal components to return.
 #' @param row_offset,col_offset Vectors whose product subtracted from `y` gives
 #'   the residual matrix.
+#'
+#' @noRd
 raw_residuals_pca <- function(y, k, row_offset, col_offset) {
   y2 <- tcrossprod(y)
   yu <- (y %*% as.matrix(col_offset)) %*% row_offset
@@ -37,6 +40,7 @@ raw_residuals_pca <- function(y, k, row_offset, col_offset) {
 #' @inheritParams raw_residuals_pca
 #'
 #' @importFrom SparseArray nzwhich
+#' @noRd
 poisson_pearson_residuals_pca <- function(y, k) {
   n <- colSums(y)
   sqrt_rate <- sqrt(rowSums(y) / sum(n))
@@ -54,6 +58,7 @@ poisson_pearson_residuals_pca <- function(y, k) {
 #' @inheritParams raw_residuals_pca
 #'
 #' @importFrom SparseArray nzwhich
+#' @noRd
 poisson_deviance_residuals_pca <- function(y, k) {
   n <- colSums(y)
   rate <- rowSums(y) / sum(n)

@@ -2,7 +2,7 @@
 % Please edit documentation in R/classes.R
 \name{TransformedMatrix}
 \alias{TransformedMatrix}
-\title{Transformed Count Matrix}
+\title{TransformedMatrix Constructor.}
 \usage{
 TransformedMatrix(y, transform)
 }
@@ -15,7 +15,7 @@ TransformedMatrix(y, transform)
 TransformedMatrix object.
 }
 \description{
-Transformed Count Matrix
+TransformedMatrix Constructor.
 }
 \examples{
 mat <- as(matrix(c(1:9), nrow=3, ncol=3), "SVT_SparseMatrix")

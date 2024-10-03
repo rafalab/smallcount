@@ -28,6 +28,7 @@ unzip_matrix_file <- function(file, unzip_func) {
 #' 
 #' @import R.utils
 #' @import tools
+#' @noRd
 get_decompressed_matrix_file <- function(file) {
   output_file <- file
   compressed_file_ext <- tolower(tools::file_ext(file))

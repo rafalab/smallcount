@@ -3,6 +3,7 @@
 #' @param y Sparse matrix (can be a base matrix, dgCMatrix, or SparseMatrix).
 #'
 #' @import methods
+#' @noRd
 convert_to_sparse <- function(y) {
   if (is(y, "matrix") || is(y, "dgCMatrix")) {
     y <- as(y, "SparseMatrix")
@@ -18,6 +19,7 @@ convert_to_sparse <- function(y) {
 #' @param default Default column sums
 #'
 #' @importFrom SparseArray colSums
+#' @noRd
 colsums_with_default <- function(y, default) {
   if (!is.null(default)) {
     return(default)
@@ -31,6 +33,7 @@ colsums_with_default <- function(y, default) {
 #' @param default Default row-wise rates
 #'
 #' @importFrom SparseArray colSums
+#' @noRd
 row_rates_with_default <- function(y, default) {
   if (!is.null(default)) {
     return(default)
@@ -43,6 +46,7 @@ row_rates_with_default <- function(y, default) {
 #'
 #' @param a Numerator
 #' @param b Denominator
+#' @noRd
 safe_divide <- function(a, b) {
   ifelse(b == 0, 0, a / b)
 }

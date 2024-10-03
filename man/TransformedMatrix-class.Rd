@@ -5,7 +5,7 @@
 \alias{TransformedMatrix-class}
 \title{Transformed Count Matrix}
 \description{
-Transformed Count Matrix
+Representation of a sparse count matrix after a CountTransform is applied.
 }
 \section{Slots}{
 

@@ -21,5 +21,5 @@ consistency with \code{\link[stats:prcomp]{stats::prcomp()}}).}
 CountTransform object.
 }
 \description{
-Maps x to log(\code{coef} * x + 1).
+CountTransform mapping x to log(\code{coef} * x + 1).
 }

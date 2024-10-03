@@ -19,5 +19,5 @@ consistency with \code{\link[stats:prcomp]{stats::prcomp()}}).}
 CountTransform object.
 }
 \description{
-Maps x to log(x/1000000 + 1).
+CountTransform mapping x to log(x/1000000 + 1).
 }

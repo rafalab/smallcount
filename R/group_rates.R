@@ -1,4 +1,4 @@
-#' Row-wise rates for groups
+#' Row-wise Rates for Groups
 #'
 #' @param y Sparse matrix (can be a base matrix, dgCMatrix, or SparseMatrix).
 #' @param g Factor specifying the group for each column.

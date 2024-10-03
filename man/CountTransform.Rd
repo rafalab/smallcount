@@ -2,7 +2,7 @@
 % Please edit documentation in R/classes.R
 \name{CountTransform}
 \alias{CountTransform}
-\title{Preprocessing on Sparse Count Matrices}
+\title{CountTransform Constructor}
 \usage{
 CountTransform(func, center = FALSE, scale = FALSE)
 }
@@ -22,10 +22,7 @@ consistency with \code{\link[stats:prcomp]{stats::prcomp()}}).}
 CountTransform object
 }
 \description{
-This class is an abstraction for the preprocessing transformations that are
-applied to count data before statistical methods like PCA (e.g., log1p,
-scaling, row-centering). Note that these transformations may not preserve the
-sparsity of the matrix.
+CountTransform Constructor
 }
 \examples{
 triple <- CountTransform(function(x) 3 * x, center = FALSE, scale = FALSE)

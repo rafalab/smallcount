@@ -1,6 +1,6 @@
 #' Identity Transformation
 #'
-#' Maps x to itself.
+#' CountTransform mapping x to itself.
 #'
 #' @note Internally, the identity function is represented by a NULL value.
 #'
@@ -19,7 +19,7 @@ identity_transform <- function(center = FALSE, scale = FALSE) {
 
 #' Log1p Transformation
 #'
-#' Maps x to log(x + 1).
+#' CountTransform mapping x to log(x + 1).
 #'
 #' @inheritParams identity_transform
 #'
@@ -31,7 +31,7 @@ log1p_transform <- function(center = FALSE, scale = FALSE) {
 
 #' Scaled Log1p Transformation
 #'
-#' Maps x to log(`coef` * x + 1).
+#' CountTransform mapping x to log(`coef` * x + 1).
 #'
 #' @param coef Scaling coefficient.
 #' @inheritParams identity_transform
@@ -44,7 +44,7 @@ scaled_log1p_transform <- function(coef, center = FALSE, scale = FALSE) {
 
 #' CPM Log1p Transformation
 #'
-#' Maps x to log(x/1000000 + 1).
+#' CountTransform mapping x to log(x/1000000 + 1).
 #'
 #' @inheritParams identity_transform
 #'

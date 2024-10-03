@@ -1,7 +1,12 @@
 setClassUnion("numericOrNull", c("numeric", "NULL"))
 setClassUnion("functionOrNull", c("function", "NULL"))
 
-#' Preprocessing on Sparse Count Matrices
+#' Preprocessing Transformations on Sparse Count Matrices
+#'
+#' Abstraction for the preprocessing transformations that are applied to count
+#' data before statistical methods like PCA (e.g., log1p, scaling,
+#' row-centering). Note that these transformations may not necessarily preserve
+#' the sparsity of the matrix.
 #'
 #' @slot func Transformation to be applied to sparse count matrix. Should be a
 #'   function with a single parameter.
@@ -28,12 +33,7 @@ get_duplicated_argument <- function(arg, name) {
   if (length(arg == 1)) c(arg, FALSE) else arg
 }
 
-#' Preprocessing on Sparse Count Matrices
-#'
-#' This class is an abstraction for the preprocessing transformations that are
-#' applied to count data before statistical methods like PCA (e.g., log1p,
-#' scaling, row-centering). Note that these transformations may not preserve the
-#' sparsity of the matrix.
+#' CountTransform Constructor
 #'
 #' @param func Transformation to be applied to sparse count matrix. Should be a
 #'   function with a single parameter.
@@ -57,6 +57,8 @@ CountTransform <- function(func, center = FALSE, scale = FALSE) {
 
 #' Transformed Count Matrix
 #'
+#' Representation of a sparse count matrix after a CountTransform is applied.
+#'
 #' @slot y SparseMatrix object.
 #' @slot row_offset,col_offset Vectors whose product
 #'   `outer(row_offset, col_offset)` represents the residual between `y` and a
@@ -72,7 +74,7 @@ setClass(
   )
 )
 
-#' Transformed Count Matrix
+#' TransformedMatrix Constructor.
 #'
 #' @param y SparseMatrix object.
 #' @param transform Transformation to apply to `y`.

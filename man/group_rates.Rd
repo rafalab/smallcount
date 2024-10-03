@@ -2,7 +2,7 @@
 % Please edit documentation in R/group_rates.R
 \name{group_rates}
 \alias{group_rates}
-\title{Row-wise rates for groups}
+\title{Row-wise Rates for Groups}
 \usage{
 group_rates(y, g)
 }
@@ -12,5 +12,5 @@ group_rates(y, g)
 \item{g}{Factor specifying the group for each column.}
 }
 \description{
-Row-wise rates for groups
+Row-wise Rates for Groups
 }

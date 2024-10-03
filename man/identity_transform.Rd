@@ -19,7 +19,7 @@ consistency with \code{\link[stats:prcomp]{stats::prcomp()}}).}
 CountTransform object.
 }
 \description{
-Maps x to itself.
+CountTransform mapping x to itself.
 }
 \note{
 Internally, the identity function is represented by a NULL value.

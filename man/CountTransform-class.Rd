@@ -3,9 +3,12 @@
 \docType{class}
 \name{CountTransform-class}
 \alias{CountTransform-class}
-\title{Preprocessing on Sparse Count Matrices}
+\title{Preprocessing Transformations on Sparse Count Matrices}
 \description{
-Preprocessing on Sparse Count Matrices
+Abstraction for the preprocessing transformations that are applied to count
+data before statistical methods like PCA (e.g., log1p, scaling,
+row-centering). Note that these transformations may not necessarily preserve
+the sparsity of the matrix.
 }
 \section{Slots}{
 
