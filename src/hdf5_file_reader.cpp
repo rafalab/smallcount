@@ -51,8 +51,10 @@ std::vector<T> readDataset(hid_t file, const std::string &dataset_name) {
 std::vector<uint64_t> getDimensions(hid_t file) {
     std::vector<uint64_t> dims = readDataset<uint64_t>(file, kDims);
     if (dims.size() != 2) {
-        stop("Dataset \"%s\" has %zu entries instead of 2.", kDims,
-             dims.size());
+        stop(
+            "Invalid matrix dimensions. Dataset \"%s\" has %zu entries instead "
+            "of 2.",
+            kDims, dims.size());
     }
     return dims;
 }
@@ -66,8 +68,8 @@ void Hdf5FileReader::read(hid_t file, SparseMatrix &matrix) {
     const auto col_inds = readDataset<uint32_t>(file, kColumnIndices);
     if (nz_rows.size() != nz_data.size()) {
         stop(
-            "Datasets \"%s\" and \"%s\" specify a different number of "
-            "non-zero entries (%zu vs. %zu).",
+            "Inconsistent HDF5 dataset sizes. Datasets \"%s\" and \"%s\" "
+            "specify a different number of non-zero entries (%zu vs. %zu).",
             kNonZeroRows, kNonZeroData, nz_rows.size(), nz_data.size());
     }
 

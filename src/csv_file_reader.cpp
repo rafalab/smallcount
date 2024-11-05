@@ -1,6 +1,7 @@
 #include "csv_file_reader.h"
 
 #include <algorithm>
+#include <cmath>
 #include <cstdlib>
 #include <cstring>
 #include <fstream>
@@ -35,7 +36,7 @@ std::vector<std::string> readColumnNames(const std::string &line) {
     // Skip the top-left corner of the .csv file.
     const char *val_start = strchr(line.c_str(), ',');
     if (val_start == nullptr) {
-        stop("No comma found on line 1.");
+        stop("No comma delimiter on line 1.");
     }
     // Read the column names.
     while (true) {
@@ -58,7 +59,7 @@ CsvLine parseCsvLine(const std::string &line, int ncol, int line_num) {
     CsvLine row;
     const char *val_start = strchr(line.c_str(), ',');
     if (val_start == nullptr) {
-        stop("No comma found on line %d.", line_num);
+        stop("No comma delimiter on line %d.", line_num);
     }
     row.row_name = std::string(line.c_str(), val_start);
 
@@ -68,16 +69,26 @@ CsvLine parseCsvLine(const std::string &line, int ncol, int line_num) {
     while (*val_start != '\0') {
         col++;
         // Read the next value, skipping over the comma.
-        int val = strtol(val_start + 1, &val_end, /*__base=*/10);
-        val_start = val_end;
-        if (val != 0) {
-            row.nz_entries.emplace_back(NonZeroEntry{.col = col, .val = val});
+        double val = strtof(val_start + 1, &val_end);
+        while (*val_end != '\0' && *val_end != ',') {
+            val_end++;
         }
+        if (trunc(val) != val) {
+            stop(
+                "Unexpected float value. Expected integer in row %d, column %d "
+                "but encountered a floating-point number: %f.",
+                line_num, col + 1, val);
+        } else if (val != 0) {
+            row.nz_entries.emplace_back(
+                NonZeroEntry{.col = col, .val = (int)val});
+        }
+        val_start = val_end;
     }
     if (col != ncol) {
-        warning(
-            "Error processing line %d. Expected %d entries but encountered %d.",
-            line_num, ncol, col);
+        stop(
+            "Inconsistent column count. Expected %d columns (from header) but "
+            "encountered %d in row %d.",
+            ncol, col, line_num);
     }
     return row;
 }

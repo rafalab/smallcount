@@ -46,10 +46,10 @@ std::optional<MtxLine> parseMtxLine(const std::string &line, size_t line_num) {
     result.col = strtol(str_end, &str_end, /*__base=*/10);
     result.val = strtol(str_end, &str_end, /*__base=*/10);
     if (result.row == 0 || result.col == 0 || result.val == 0) {
-        warning(
-            "Error processing line %zu. Encountered zeroes or misconfigured "
-            "entry: %d %d %d",
-            line_num, result.row, result.col, result.val);
+        stop(
+            "Unexpected entry. Line %zu does not specify three positive "
+            "integers:\n%s",
+            line_num, line);
         return std::nullopt;
     }
     return result;
@@ -67,8 +67,7 @@ void MtxFileReader::read(std::ifstream &file, SparseMatrix &matrix) {
         const auto entry = parseMtxLine(line, line_num);
         if (!entry.has_value()) {
             continue;
-        }
-        if (is_initialized) {
+        } else if (is_initialized) {
             matrix.addEntry(entry->data());
             non_zero_count++;
         } else {
@@ -77,9 +76,9 @@ void MtxFileReader::read(std::ifstream &file, SparseMatrix &matrix) {
         }
     }
     if (non_zero_count != matrix.nval()) {
-        warning(
-            "Count of non-zero data does not match the count specified in "
-            "the matrix metadata (%zu != %zu).",
+        stop(
+            "Inconsistent entry count. Number of non-zero entries does not "
+            "match the total specified in the matrix metadata (%zu != %zu).",
             non_zero_count, matrix.nval());
     }
 }
