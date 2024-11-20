@@ -12,34 +12,43 @@ validate_test_matrix <- function(sparse_matrix) {
 }
 
 test_that("Reads .h5 file", {
-  test_file <- test_path("testdata", paste0(MATRIX_FILENAME, ".h5"))
+  matrix_file <- test_path("testdata", paste0(MATRIX_FILENAME, ".h5"))
+  expected_dimnames <- list(c("r1", "r2", "r3"), c("c1", "c2", "c3"))
 
-  svt_matrix <- read_sparse_matrix(test_file)
+  svt_matrix <- read_sparse_matrix(matrix_file, col.names=TRUE)
   validate_test_matrix(svt_matrix)
+  expect_equal(svt_matrix@dimnames, expected_dimnames)
+  
+  svt_matrix2 <- read_sparse_matrix(matrix_file, col.names=TRUE,
+                                    row.names="symbol", genome="genome")
+  validate_test_matrix(svt_matrix2)
+  expect_equal(svt_matrix2@dimnames, expected_dimnames)
 
-  coo_matrix <- read_sparse_matrix(test_file, representation="coo")
+  coo_matrix <- read_sparse_matrix(matrix_file, col.names=TRUE,
+                                   representation="coo")
   validate_test_matrix(coo_matrix)
+  expect_equal(coo_matrix@dimnames, expected_dimnames)
 })
 
 test_that("Reads bzipped .mtx file", {
-  test_file <- test_path("testdata", paste0(MATRIX_FILENAME, ".tbz2"))
+  matrix_file <- test_path("testdata", paste0(MATRIX_FILENAME, ".tbz2"))
 
-  svt_matrix <- read_sparse_matrix(test_file)
+  svt_matrix <- read_sparse_matrix(matrix_file)
   validate_test_matrix(svt_matrix)
 
-  coo_matrix <- read_sparse_matrix(test_file, representation="coo")
+  coo_matrix <- read_sparse_matrix(matrix_file, representation="coo")
   validate_test_matrix(coo_matrix)
 })
 
 test_that("Reads gzipped .csv file", {
-  test_file <- test_path("testdata", paste0(MATRIX_FILENAME, ".tar.gz"))
+  matrix_file <- test_path("testdata", paste0(MATRIX_FILENAME, ".tar.gz"))
   expected_dimnames <- list(c("r1", "r2", "r3"), c("c1", "c2", "c3"))
 
-  svt_matrix <- read_sparse_matrix(test_file)
+  svt_matrix <- read_sparse_matrix(matrix_file)
   validate_test_matrix(svt_matrix)
   expect_equal(svt_matrix@dimnames, expected_dimnames)
 
-  coo_matrix <- read_sparse_matrix(test_file, representation="coo")
+  coo_matrix <- read_sparse_matrix(matrix_file, representation="coo")
   validate_test_matrix(coo_matrix)
   expect_equal(coo_matrix@dimnames, expected_dimnames)
 })

@@ -7,6 +7,7 @@
 
 #include "Rcpp.h"
 #include "csv_file_reader.h"
+#include "file_params.h"
 #include "hdf5.h"
 #include "hdf5_file_reader.h"
 #include "mtx_file_reader.h"
@@ -45,42 +46,37 @@ void readMtxFile(const std::string &filepath, SparseMatrix &matrix) {
     file.close();
 }
 
-void readHdf5File(const std::string &filepath, SparseMatrix &matrix) {
+void readHdf5File(const std::string &filepath, const FileParams &params,
+                  SparseMatrix &matrix) {
     hid_t file = H5Fopen(filepath.c_str(), H5F_ACC_RDONLY, H5P_DEFAULT);
     if (file < 0) {
         stop("Could not open file: %s", filepath);
     }
-    Hdf5FileReader::read(file, matrix);
+    Hdf5FileReader::read(file, params, matrix);
     H5Fclose(file);
 }
 
-void validateArguments(const std::string &file_extension,
-                       const std::string &rep, SparseMatrix *matrix) {
+void validateArguments(const std::string &file_extension) {
     if (supportedExtensions.find(file_extension) == supportedExtensions.end()) {
         stop("File extension %s not supported. Try *.csv, *.mtx, or *.h5.",
              file_extension);
-    }
-    if (matrix == nullptr) {
-        stop(
-            "Invalid matrix representation specified: \"%s\". Only \"coo\" "
-            "and \"svt\" supported.",
-            rep);
     }
 }
 
 }  // namespace
 
 SEXP SparseMatrixFileReader::read(const std::string &filepath,
-                                  const std::string &rep) {
+                                  const std::string &rep,
+                                  const FileParams &params) {
     const std::string file_extension = get_extension(filepath);
     std::unique_ptr<SparseMatrix> matrix = SparseMatrix::create(rep);
-    validateArguments(file_extension, rep, matrix.get());
+    validateArguments(file_extension);
     if (file_extension == kCsv) {
         readCsvFile(filepath, *matrix);
     } else if (file_extension == kMtx) {
         readMtxFile(filepath, *matrix);
     } else {
-        readHdf5File(filepath, *matrix);
+        readHdf5File(filepath, params, *matrix);
     }
     return matrix->toRcpp();
 }

@@ -4,17 +4,18 @@
 #include <string>
 
 #include "Rcpp.h"
+#include "file_params.h"
 
 using namespace Rcpp;
 
 namespace smallcount {
 
-// Static class to parse a sparse matrix from a file.
+// Static class to parse SparseMatrix objects.
 class SparseMatrixFileReader {
    public:
-    // Reads a sparse matrix from a file using the internal representation
-    // specified (either "coo" or "svt").
-    static SEXP read(const std::string &filepath, const std::string &rep);
+    // Reads a SparseMatrix object from a file or directory.
+    static SEXP read(const std::string &filepath, const std::string &rep,
+                     const FileParams &params);
 };
 
 }  // namespace smallcount

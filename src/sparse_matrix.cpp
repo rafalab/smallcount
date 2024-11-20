@@ -28,8 +28,10 @@ static constexpr char kDimNames[] = "dimnames";
 List createDimNamesList(std::vector<std::string> row_names,
                         std::vector<std::string> col_names) {
     List dim_names = List(2);
-    if (!row_names.empty() && !col_names.empty()) {
+    if (!row_names.empty()) {
         dim_names[0] = wrap(std::move(row_names));
+    }
+    if (!col_names.empty()) {
         dim_names[1] = wrap(std::move(col_names));
     }
     return dim_names;
@@ -41,10 +43,7 @@ std::unique_ptr<SparseMatrix> SparseMatrix::create(const std::string &rep) {
     if (rep == kCooRep) {
         return std::make_unique<CooSparseMatrix>();
     }
-    if (rep == kSvtRep) {
-        return std::make_unique<SvtSparseMatrix>();
-    }
-    return nullptr;
+    return std::make_unique<SvtSparseMatrix>();
 }
 
 void SparseMatrix::checkValid(const MatrixData &entry) {

@@ -11,20 +11,23 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // cppReadSparseMatrix
-SEXP cppReadSparseMatrix(std::string filepath, std::string rep);
-RcppExport SEXP _smallcount_cppReadSparseMatrix(SEXP filepathSEXP, SEXP repSEXP) {
+SEXP cppReadSparseMatrix(std::string sample, bool col_names, std::string row_names, std::string genome, std::string rep);
+RcppExport SEXP _smallcount_cppReadSparseMatrix(SEXP sampleSEXP, SEXP col_namesSEXP, SEXP row_namesSEXP, SEXP genomeSEXP, SEXP repSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< std::string >::type filepath(filepathSEXP);
+    Rcpp::traits::input_parameter< std::string >::type sample(sampleSEXP);
+    Rcpp::traits::input_parameter< bool >::type col_names(col_namesSEXP);
+    Rcpp::traits::input_parameter< std::string >::type row_names(row_namesSEXP);
+    Rcpp::traits::input_parameter< std::string >::type genome(genomeSEXP);
     Rcpp::traits::input_parameter< std::string >::type rep(repSEXP);
-    rcpp_result_gen = Rcpp::wrap(cppReadSparseMatrix(filepath, rep));
+    rcpp_result_gen = Rcpp::wrap(cppReadSparseMatrix(sample, col_names, row_names, genome, rep));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_smallcount_cppReadSparseMatrix", (DL_FUNC) &_smallcount_cppReadSparseMatrix, 2},
+    {"_smallcount_cppReadSparseMatrix", (DL_FUNC) &_smallcount_cppReadSparseMatrix, 5},
     {NULL, NULL, 0}
 };
 
