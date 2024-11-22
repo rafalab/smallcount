@@ -40,7 +40,7 @@ struct MatrixData {
 // Abstract sparse matrix struct.
 struct SparseMatrix {
     // Initializes the matrix with the given metadata.
-    virtual void init(const MatrixMetadata &metadata) = 0;
+    virtual void init(MatrixMetadata metadata) = 0;
     // Adds a non-zero data entry to the matrix.
     virtual void addEntry(const MatrixData &entry) = 0;
     // Consumes the matrix and converts it to an S4 object.
@@ -74,7 +74,7 @@ struct CooSparseMatrix : public SparseMatrix {
     // Non-zero values.
     std::vector<int> vals{};
 
-    void init(const MatrixMetadata &metadata) override;
+    void init(MatrixMetadata metadata) override;
     void addEntry(const MatrixData &entry) override;
     SEXP toRcpp() override;
 
@@ -89,7 +89,7 @@ struct SvtSparseMatrix : public SparseMatrix {
     // Sparse vector tree.
     Svt svt{};
 
-    void init(const MatrixMetadata &metadata) override;
+    void init(MatrixMetadata metadata) override;
     void addEntry(const MatrixData &entry) override;
     SEXP toRcpp() override;
 

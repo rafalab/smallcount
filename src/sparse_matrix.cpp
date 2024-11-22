@@ -58,11 +58,11 @@ void SparseMatrix::checkValid(const MatrixData &entry) {
 // -----------------------------------------------------------------------------
 // COO Sparse Matrix
 // -----------------------------------------------------------------------------
-void CooSparseMatrix::init(const MatrixMetadata &m) {
-    metadata = m;
-    rows.reserve(m.nval);
-    cols.reserve(m.nval);
-    vals.reserve(m.nval);
+void CooSparseMatrix::init(MatrixMetadata m) {
+    metadata = std::move(m);
+    rows.reserve(metadata.nval);
+    cols.reserve(metadata.nval);
+    vals.reserve(metadata.nval);
 }
 
 void CooSparseMatrix::addEntry(const MatrixData &entry) {
@@ -94,9 +94,9 @@ IntegerMatrix CooSparseMatrix::createCoordsMatrix(std::vector<int> rows,
 // -----------------------------------------------------------------------------
 // SVT Sparse Matrix
 // -----------------------------------------------------------------------------
-void SvtSparseMatrix::init(const MatrixMetadata &m) {
-    metadata = m;
-    svt = Svt(m.ncol);
+void SvtSparseMatrix::init(MatrixMetadata m) {
+    metadata = std::move(m);
+    svt = Svt(metadata.ncol);
 }
 
 void SvtSparseMatrix::addEntry(const MatrixData &entry) {

@@ -4,9 +4,9 @@
 #include <optional>
 #include <string>
 
-#include "file_params.h"
 #include "hdf5.h"
 #include "sparse_matrix.h"
+#include "tenx_file_params.h"
 
 namespace smallcount {
 
@@ -14,8 +14,8 @@ namespace smallcount {
 class Hdf5FileReader {
    public:
     // Reads the contents of an HDF5 file into a SparseMatrix object.
-    static void read(hid_t file, const FileParams& params,
-                     SparseMatrix& matrix);
+    static void read(hid_t file, const TenxFileParams &params,
+                     SparseMatrix &matrix);
 
    private:
     // Static class. Should not be instantiated.

@@ -5,9 +5,9 @@
 #include <vector>
 
 #include "Rcpp.h"
-#include "file_params.h"
 #include "hdf5.h"
 #include "sparse_matrix.h"
+#include "tenx_file_params.h"
 
 using namespace Rcpp;
 
@@ -15,32 +15,32 @@ namespace smallcount {
 namespace {
 
 // Name of the HDF5 group containing the matrix datasets.
-std::string h5GroupName(const FileParams& params) {
+std::string h5GroupName(const TenxFileParams &params) {
     return params.genome.has_value() ? *params.genome : "matrix";
 }
 
 // Name of the HDF5 dataset storing the non-zero row indices.
-std::string indicesDataset(const FileParams& params) {
+std::string indicesDataset(const TenxFileParams &params) {
     return h5GroupName(params) + "/indices";
 }
 
 // Name of the HDF5 dataset storing the non-zero data entries.
-std::string dataDataset(const FileParams& params) {
+std::string dataDataset(const TenxFileParams &params) {
     return h5GroupName(params) + "/data";
 }
 
 // Name of the HDF5 dataset storing the non-zero column indices.
-std::string indptrDataset(const FileParams& params) {
+std::string indptrDataset(const TenxFileParams &params) {
     return h5GroupName(params) + "/indptr";
 }
 
 // Name of the HDF5 dataset storing the matrix dimensions.
-std::string shapeDataset(const FileParams& params) {
+std::string shapeDataset(const TenxFileParams &params) {
     return h5GroupName(params) + "/shape";
 }
 
 // Name of the HDF5 dataset storing the row names.
-std::string featuresDataset(const FileParams& params) {
+std::string featuresDataset(const TenxFileParams &params) {
     if (params.genome.has_value()) {
         std::string dataset =
             params.use_id_row_names ? "/genes" : "/gene_names";
@@ -51,7 +51,7 @@ std::string featuresDataset(const FileParams& params) {
 }
 
 // Name of the HDF5 dataset storing the column names.
-std::string barcodesDataset(const FileParams& params) {
+std::string barcodesDataset(const TenxFileParams &params) {
     return h5GroupName(params) + "/barcodes";
 }
 
@@ -81,7 +81,7 @@ std::vector<std::string> readData<std::string>(hid_t dataset,
     hid_t mem_type = H5Tcopy(H5T_C_S1);
     H5Tset_size(mem_type, str_size);
 
-    char* buffer = new char[num_entries * str_size];
+    char *buffer = new char[num_entries * str_size];
     H5Dread(dataset, mem_type, H5S_ALL, H5S_ALL, H5P_DEFAULT, buffer);
     std::vector<std::string> data(num_entries);
     for (size_t i = 0; i < num_entries; i++) {
@@ -98,7 +98,7 @@ std::vector<std::string> readData<std::string>(hid_t dataset,
 
 // Reads the contents of an HDF5 dataset into a vector of type T.
 template <typename T>
-std::vector<T> readDataset(hid_t file, const std::string& dataset_name) {
+std::vector<T> readDataset(hid_t file, const std::string &dataset_name) {
     hid_t dataset = H5Dopen2(file, dataset_name.c_str(), H5P_DEFAULT);
     hid_t dataspace = H5Dget_space(dataset);
 
@@ -113,8 +113,8 @@ std::vector<T> readDataset(hid_t file, const std::string& dataset_name) {
 
 }  // namespace
 
-void Hdf5FileReader::read(hid_t file, const FileParams& params,
-                          SparseMatrix& matrix) {
+void Hdf5FileReader::read(hid_t file, const TenxFileParams &params,
+                          SparseMatrix &matrix) {
     // Read non-zero matrix entries in CSC format.
     const std::string indices_dataset = indicesDataset(params);
     const std::string data_dataset = dataDataset(params);

@@ -4,7 +4,7 @@
 #include <string>
 
 #include "Rcpp.h"
-#include "file_params.h"
+#include "tenx_file_params.h"
 
 using namespace Rcpp;
 
@@ -15,7 +15,7 @@ class SparseMatrixFileReader {
    public:
     // Reads a SparseMatrix object from a file or directory.
     static SEXP read(const std::string &filepath, const std::string &rep,
-                     const FileParams &params);
+                     const TenxFileParams &params);
 };
 
 }  // namespace smallcount
