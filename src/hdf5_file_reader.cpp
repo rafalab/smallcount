@@ -114,12 +114,31 @@ std::vector<T> readDataset(hid_t file, const std::string &dataset_name) {
 }  // namespace
 
 SvtSparseMatrix Hdf5FileReader::read(hid_t file, const TenxFileParams &params) {
+    // Check if HDF5 group exists.
+    const std::string genome = h5GroupName(params);
+    if (H5Lexists(file, genome.c_str(), H5P_DEFAULT) <= 0) {
+        stop("Group '%s' not found in HDF5 file", genome.c_str());
+    }
+
     // Read non-zero matrix entries in CSC format.
     const std::string indices_dataset = indicesDataset(params);
     const std::string data_dataset = dataDataset(params);
+    const std::string indptr_dataset = indptrDataset(params);
+
+    // Check that datasets exist.
+    if (H5Lexists(file, indices_dataset.c_str(), H5P_DEFAULT) <= 0) {
+        stop("Dataset '%s' not found in HDF5 file", indices_dataset.c_str());
+    }
+    if (H5Lexists(file, data_dataset.c_str(), H5P_DEFAULT) <= 0) {
+        stop("Dataset '%s' not found in HDF5 file", data_dataset.c_str());
+    }
+    if (H5Lexists(file, indptr_dataset.c_str(), H5P_DEFAULT) <= 0) {
+        stop("Dataset '%s' not found in HDF5 file", indptr_dataset.c_str());
+    }
+
     const auto nz_rows = readDataset<uint32_t>(file, indices_dataset);
     const auto nz_data = readDataset<uint32_t>(file, data_dataset);
-    const auto col_inds = readDataset<uint32_t>(file, indptrDataset(params));
+    const auto col_inds = readDataset<uint32_t>(file, indptr_dataset);
     if (nz_rows.size() != nz_data.size()) {
         stop(
             "Inconsistent HDF5 dataset sizes. Datasets \"%s\" and \"%s\" "
@@ -129,6 +148,9 @@ SvtSparseMatrix Hdf5FileReader::read(hid_t file, const TenxFileParams &params) {
 
     // Read matrix dimensions.
     const std::string shape_dataset = shapeDataset(params);
+    if (H5Lexists(file, shape_dataset.c_str(), H5P_DEFAULT) <= 0) {
+        stop("Dataset '%s' not found in HDF5 file", shape_dataset.c_str());
+    }
     const auto dims = readDataset<uint64_t>(file, shape_dataset);
     if (dims.size() != 2) {
         stop(
@@ -139,6 +161,9 @@ SvtSparseMatrix Hdf5FileReader::read(hid_t file, const TenxFileParams &params) {
 
     // Read row and column names.
     const std::string features_dataset = featuresDataset(params);
+    if (H5Lexists(file, features_dataset.c_str(), H5P_DEFAULT) <= 0) {
+        stop("Dataset '%s' not found in HDF5 file", features_dataset.c_str());
+    }
     auto row_names = readDataset<std::string>(file, features_dataset);
     if (row_names.size() != dims[0]) {
         warning(
@@ -149,6 +174,10 @@ SvtSparseMatrix Hdf5FileReader::read(hid_t file, const TenxFileParams &params) {
     std::vector<std::string> col_names{};
     if (params.use_barcode_col_names) {
         const std::string barcodes_dataset = barcodesDataset(params);
+        if (H5Lexists(file, barcodes_dataset.c_str(), H5P_DEFAULT) <= 0) {
+            stop("Dataset '%s' not found in HDF5 file",
+                 barcodes_dataset.c_str());
+        }
         col_names = readDataset<std::string>(file, barcodes_dataset);
         if (col_names.size() != dims[1]) {
             warning(
