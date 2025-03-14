@@ -1,4 +1,4 @@
-"""Generates test data for the read_sparse_matrix function.
+"""Generates test data for the readSparseMatrix function.
 
 Test matrix:
    r1 r2 r3

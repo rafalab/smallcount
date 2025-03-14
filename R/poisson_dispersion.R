@@ -8,10 +8,10 @@
 #'
 #' @examples
 #' data("tenx_subset")
-#' disp <- poisson_dispersion(tenx_subset)
+#' disp <- poissonDispersion(tenx_subset)
 #' hist(disp, nclass = 50)
 #' @export
-poisson_dispersion <- function(y, rate = NULL, n = NULL) {
+poissonDispersion <- function(y, rate = NULL, n = NULL) {
   y <- convert_to_sparse(y)
   n <- colsums_with_default(y, n)
   rate <- row_rates_with_default(y, rate)

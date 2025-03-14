@@ -19,7 +19,7 @@ compute_pca <- function(rtr, k, y, offset1 = NULL, offset2 = NULL) {
 
 #' Principal component analysis on raw residuals
 #'
-#' @inheritParams poisson_pca
+#' @inheritParams poissonPca
 #' @param k Number of principal components to return.
 #' @param row_offset,col_offset Vectors whose product subtracted from `y` gives
 #'   the residual matrix.
@@ -111,12 +111,12 @@ get_count_transform <- function(transform, center, scale, coef) {
 #' data(tenx_subset)
 #' dim(tenx_subset)
 #' system.time({
-#'   pc <- poisson_pca(tenx_subset, k = 10, transform = "pearson")
+#'   pc <- poissonPca(tenx_subset, k = 10, transform = "pearson")
 #' })
 #' plot(pc$x[,1:2])
 #' barplot(pc$sdev)
 #' @export
-poisson_pca <- function(y, k = 50, transform = NULL, center = FALSE,
+poissonPca <- function(y, k = 50, transform = NULL, center = FALSE,
                         scale = FALSE) {
   y <- convert_to_sparse(y)
 

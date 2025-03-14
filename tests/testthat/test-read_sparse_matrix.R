@@ -16,14 +16,14 @@ validate_test_matrix <- function(sparse_matrix) {
 test_that("Reads .h5 file (Cell Ranger v3)", {
   matrix_file <- test_path("testdata", paste0(MATRIX_FILENAME, "_v3.h5"))
 
-  svt_matrix <- read_sparse_matrix(matrix_file, col.names=TRUE)
+  svt_matrix <- readSparseMatrix(matrix_file, col.names=TRUE)
   validate_test_matrix(svt_matrix)
 })
 
 test_that("Reads .h5 file (Cell Ranger v2)", {
   matrix_file <- test_path("testdata", paste0(MATRIX_FILENAME, "_v2.h5"))
 
-  svt_matrix <- read_sparse_matrix(matrix_file, col.names=TRUE,
+  svt_matrix <- readSparseMatrix(matrix_file, col.names=TRUE,
                                    row.names="symbol", genome="genome")
   validate_test_matrix(svt_matrix)
 })
@@ -31,14 +31,14 @@ test_that("Reads .h5 file (Cell Ranger v2)", {
 test_that("Reads bzipped .mtx directory (Cell Ranger v3)", {
   matrix_file <- test_path("testdata", paste0(MATRIX_FILENAME, "_v3.tbz2"))
 
-  svt_matrix <- read_sparse_matrix(matrix_file, col.names=TRUE, row.names="id")
+  svt_matrix <- readSparseMatrix(matrix_file, col.names=TRUE, row.names="id")
   validate_test_matrix(svt_matrix)
 })
 
 test_that("Reads .mtx directory with prefix (Cell Ranger v2)", {
   matrix_file <- test_path("testdata", paste0(MATRIX_FILENAME, "_v2/prefix_"))
 
-  svt_matrix <- read_sparse_matrix(matrix_file, col.names=TRUE,
+  svt_matrix <- readSparseMatrix(matrix_file, col.names=TRUE,
                                    row.names="symbol")
   validate_test_matrix(svt_matrix)
 })
@@ -46,6 +46,6 @@ test_that("Reads .mtx directory with prefix (Cell Ranger v2)", {
 test_that("Reads gzipped .csv file", {
   matrix_file <- test_path("testdata", paste0(MATRIX_FILENAME, ".tar.gz"))
 
-  svt_matrix <- read_sparse_matrix(matrix_file)
+  svt_matrix <- readSparseMatrix(matrix_file)
   validate_test_matrix(svt_matrix)
 })

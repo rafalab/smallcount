@@ -162,7 +162,7 @@ validate_sample <- function(filepath) {
 #'
 #' @examples
 #' data("tenx_subset")  # Original dataset
-#' new <- read_sparse_matrix(system.file(
+#' new <- readSparseMatrix(system.file(
 #'   "extdata/tenx_subset.csv.gz", package = "smallcount"))
 #' identical(new, tenx_subset)
 #'
@@ -184,7 +184,7 @@ validate_sample <- function(filepath) {
 #'
 #' @export
 #' @useDynLib smallcount
-read_sparse_matrix <- function(sample,
+readSparseMatrix <- function(sample,
                                col.names = FALSE,
                                row.names = c("id", "symbol"),
                                genome = NULL) {

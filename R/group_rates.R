@@ -5,7 +5,7 @@
 #'
 #' @importFrom SparseArray nzvals nzwhich
 #' @export
-group_rates <- function(y, g) {
+groupRates <- function(y, g) {
   y <- convert_to_sparse(y)
 
   if(!is.factor(g)){

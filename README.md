@@ -18,7 +18,7 @@ You can compute Pearson residuals followed by PCA like this:
 
 ```
 dim(tenx_subset)
-system.time({pc <- poisson_pca(tenx_subset, transform = "pearson")})
+system.time({pc <- poissonPca(tenx_subset, transform = "pearson")})
 ```
 
 This will give same results as:

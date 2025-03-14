@@ -8,10 +8,10 @@
 #'
 #' @examples
 #' data("tenx_subset")
-#' dev <- poisson_deviance(tenx_subset)
+#' dev <- poissonDeviance(tenx_subset)
 #' hist(dev, nclass = 50)
 #' @export
-poisson_deviance <- function(y, rate = NULL, n = NULL) {
+poissonDeviance <- function(y, rate = NULL, n = NULL) {
   y <- convert_to_sparse(y)
   n <- colsums_with_default(y, n)
   rate <- row_rates_with_default(y, rate)
