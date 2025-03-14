@@ -18,10 +18,6 @@ test_that("Reads .h5 file (Cell Ranger v3)", {
 
   svt_matrix <- read_sparse_matrix(matrix_file, col.names=TRUE)
   validate_test_matrix(svt_matrix)
-
-  coo_matrix <- read_sparse_matrix(matrix_file, col.names=TRUE,
-                                   representation="coo")
-  validate_test_matrix(coo_matrix)
 })
 
 test_that("Reads .h5 file (Cell Ranger v2)", {
@@ -37,10 +33,6 @@ test_that("Reads bzipped .mtx directory (Cell Ranger v3)", {
 
   svt_matrix <- read_sparse_matrix(matrix_file, col.names=TRUE, row.names="id")
   validate_test_matrix(svt_matrix)
-
-  coo_matrix <- read_sparse_matrix(matrix_file, col.names=TRUE,
-                                   representation="coo")
-  validate_test_matrix(coo_matrix)
 })
 
 test_that("Reads .mtx directory with prefix (Cell Ranger v2)", {
@@ -56,7 +48,4 @@ test_that("Reads gzipped .csv file", {
 
   svt_matrix <- read_sparse_matrix(matrix_file)
   validate_test_matrix(svt_matrix)
-
-  coo_matrix <- read_sparse_matrix(matrix_file, representation="coo")
-  validate_test_matrix(coo_matrix)
 })

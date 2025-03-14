@@ -53,21 +53,21 @@ std::vector<std::string> readColumnNames(const std::string &line) {
     return col_names;
 }
 
-// Reads the row name and non-zero data given in a line of a .csv file.
-CsvLine parseCsvLine(const std::string &line, int ncol, int line_num) {
+// Reads the row name and non-zero data given in a line of a .csv file,
+// directly adding entries to the provided SVT matrix.
+void parseCsvLine(const std::string &line, int ncol, int line_num, int row_idx,
+                  Svt &svt, std::string &row_name, size_t *nval) {
     // Read the row name.
-    CsvLine row;
     const char *val_start = strchr(line.c_str(), ',');
     if (val_start == nullptr) {
         stop("No comma delimiter on line %d.", line_num);
     }
-    row.row_name = std::string(line.c_str(), val_start);
+    row_name = std::string(line.c_str(), val_start);
 
     // Read the row data.
     char *val_end;
     int col = 0;
     while (*val_start != '\0') {
-        col++;
         // Read the next value, skipping over the comma.
         double val = strtof(val_start + 1, &val_end);
         while (*val_end != '\0' && *val_end != ',') {
@@ -77,12 +77,14 @@ CsvLine parseCsvLine(const std::string &line, int ncol, int line_num) {
             stop(
                 "Unexpected float value. Expected integer in row %d, column %d "
                 "but encountered a floating-point number: %f.",
-                line_num, col + 1, val);
+                line_num, col + 2, val);
         } else if (val != 0) {
-            row.nz_entries.emplace_back(
-                NonZeroEntry{.col = col, .val = (int)val});
+            svt[col][kSvtRowInd].emplace_back(row_idx);
+            svt[col][kSvtValInd].emplace_back(val);
+            (*nval)++;
         }
         val_start = val_end;
+        col++;
     }
     if (col != ncol) {
         stop(
@@ -90,38 +92,40 @@ CsvLine parseCsvLine(const std::string &line, int ncol, int line_num) {
             "encountered %d in row %d.",
             ncol, col, line_num);
     }
-    return row;
 }
 
 }  // namespace
 
-void CsvFileReader::read(std::ifstream &file, SparseMatrix &matrix) {
+SvtSparseMatrix CsvFileReader::read(std::ifstream &file) {
+    Svt svt;
+    std::vector<std::string> col_names;
+    std::vector<std::string> row_names;
+    int ncol = 0;
+    size_t nval = 0;
+
     std::string line;
     int line_num = 0;
-    MatrixMetadata metadata{.nval = 0};
-    std::vector<NonZeroEntries> sparse_mat;
     while (std::getline(file, line)) {
         line_num++;
         if (line_num > 1) {
-            auto row = parseCsvLine(line, metadata.ncol, line_num);
-            metadata.nval += row.nz_entries.size();
-            metadata.row_names.push_back(row.row_name);
-            sparse_mat.emplace_back(std::move(row.nz_entries));
+            // Initialize each column with two vectors (rows and values)
+            if (svt.empty()) svt = Svt(ncol, SvtEntry(2));
+            std::string row_name;
+            parseCsvLine(line, /*ncol=*/ncol, /*line_num=*/line_num,
+                         /*row_idx=*/line_num - 2, svt, row_name, &nval);
+            row_names.emplace_back(row_name);
         } else {
-            metadata.col_names = readColumnNames(line);
-            metadata.ncol = metadata.col_names.size();
+            col_names = readColumnNames(line);
+            ncol = col_names.size();
         }
     }
-    metadata.nrow = line_num - 1;
 
-    matrix.init(std::move(metadata));
-    for (int row = 0; row < sparse_mat.size(); row++) {
-        for (const NonZeroEntry &entry : sparse_mat[row]) {
-            // Shift row by +1 for 1-based indexing.
-            matrix.addEntry(
-                MatrixData{.row = row + 1, .col = entry.col, .val = entry.val});
-        }
-    }
+    MatrixMetadata metadata{.nrow = line_num - 1,
+                            .ncol = ncol,
+                            .nval = nval,
+                            .row_names = std::move(row_names),
+                            .col_names = std::move(col_names)};
+    return SvtSparseMatrix(std::move(svt), std::move(metadata));
 }
 
 }  // namespace smallcount

@@ -11,8 +11,8 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // cppReadSparseMatrix
-SEXP cppReadSparseMatrix(std::string sample, bool barcode_col_names, bool id_row_names, std::string genome, bool use_features_tsv, std::string rep);
-RcppExport SEXP _smallcount_cppReadSparseMatrix(SEXP sampleSEXP, SEXP barcode_col_namesSEXP, SEXP id_row_namesSEXP, SEXP genomeSEXP, SEXP use_features_tsvSEXP, SEXP repSEXP) {
+SEXP cppReadSparseMatrix(std::string sample, bool barcode_col_names, bool id_row_names, std::string genome, bool use_features_tsv);
+RcppExport SEXP _smallcount_cppReadSparseMatrix(SEXP sampleSEXP, SEXP barcode_col_namesSEXP, SEXP id_row_namesSEXP, SEXP genomeSEXP, SEXP use_features_tsvSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -21,14 +21,13 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< bool >::type id_row_names(id_row_namesSEXP);
     Rcpp::traits::input_parameter< std::string >::type genome(genomeSEXP);
     Rcpp::traits::input_parameter< bool >::type use_features_tsv(use_features_tsvSEXP);
-    Rcpp::traits::input_parameter< std::string >::type rep(repSEXP);
-    rcpp_result_gen = Rcpp::wrap(cppReadSparseMatrix(sample, barcode_col_names, id_row_names, genome, use_features_tsv, rep));
+    rcpp_result_gen = Rcpp::wrap(cppReadSparseMatrix(sample, barcode_col_names, id_row_names, genome, use_features_tsv));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_smallcount_cppReadSparseMatrix", (DL_FUNC) &_smallcount_cppReadSparseMatrix, 6},
+    {"_smallcount_cppReadSparseMatrix", (DL_FUNC) &_smallcount_cppReadSparseMatrix, 5},
     {NULL, NULL, 0}
 };
 

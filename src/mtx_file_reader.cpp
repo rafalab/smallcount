@@ -14,6 +14,13 @@ using namespace Rcpp;
 namespace smallcount {
 namespace {
 
+// Non-zero entry in a sparse matrix.
+struct MatrixData {
+    int row;  // Row index (1-based index, for consistency with R)
+    int col;  // Column index (1-based index, for consistency with R)
+    int val;  // Value
+};
+
 // Line of data/metadata in an .mtx file.
 // Typically corresponds to a non-zero entry in a sparse matrix.
 // Contains matrix metadata for the first line of the .mtx file.
@@ -102,35 +109,68 @@ std::optional<MtxLine> parseMtxLine(const std::string &line, size_t line_num) {
 
 }  // namespace
 
-void MtxFileReader::read(std::ifstream &matrix_file,
-                         std::ifstream &barcodes_file,
-                         std::ifstream &features_file,
-                         const TenxFileParams &params, SparseMatrix &matrix) {
+void sortRowIndices(SvtEntry &col) {
+    // Check if already sorted.
+    if(std::is_sorted(col[kSvtRowInd].begin(), col[kSvtRowInd].end())) {
+        return;
+    }
+
+    // Create vector of indices sorted by row.
+    std::vector<size_t> indices(col[kSvtRowInd].size());
+    std::iota(indices.begin(), indices.end(), 0);
+    std::sort(indices.begin(), indices.end(), [&](size_t i, size_t j) {
+        return col[kSvtRowInd][i] < col[kSvtRowInd][j];
+    });
+
+    // Sort parallel arrays by row index.
+    std::vector<int> sorted_rows(col[kSvtRowInd].size());
+    std::vector<int> sorted_vals(col[kSvtValInd].size());
+    for (size_t i = 0; i < indices.size(); ++i) {
+        sorted_rows[i] = col[kSvtRowInd][indices[i]];
+        sorted_vals[i] = col[kSvtValInd][indices[i]];
+    }
+    col[kSvtRowInd] = std::move(sorted_rows);
+    col[kSvtValInd] = std::move(sorted_vals);
+}
+
+SvtSparseMatrix MtxFileReader::read(std::ifstream &matrix_file,
+                                    std::ifstream &barcodes_file,
+                                    std::ifstream &features_file,
+                                    const TenxFileParams &params) {
+    Svt svt;
+    MatrixMetadata metadata;
+
     std::string line;
     size_t line_num = 0;
     size_t non_zero_count = 0;
-    bool is_initialized = false;
     while (std::getline(matrix_file, line)) {
         line_num++;
         const auto entry = parseMtxLine(line, line_num);
         if (!entry.has_value()) {
             continue;
-        } else if (is_initialized) {
-            matrix.addEntry(entry->data());
-            non_zero_count++;
-        } else {
-            MatrixMetadata metadata =
+        } else if (svt.empty()) {
+            metadata =
                 createMetadata(*entry, barcodes_file, features_file, params);
-            matrix.init(std::move(metadata));
-            is_initialized = true;
+            svt = Svt(metadata.ncol, SvtEntry(2));
+        } else {
+            svt[entry->col - 1][kSvtRowInd].emplace_back(entry->row - 1);
+            svt[entry->col - 1][kSvtValInd].emplace_back(entry->val);
+            non_zero_count++;
         }
     }
-    if (non_zero_count != matrix.nval()) {
+
+    if (non_zero_count != metadata.nval) {
         stop(
             "Inconsistent entry count. Number of non-zero entries does not "
             "match the total specified in the matrix metadata (%zu != %zu).",
-            non_zero_count, matrix.nval());
+            non_zero_count, metadata.nval);
     }
+
+    for (auto &col : svt) {
+        sortRowIndices(col);
+    }
+
+    return SvtSparseMatrix(std::move(svt), std::move(metadata));
 }
 
 }  // namespace smallcount

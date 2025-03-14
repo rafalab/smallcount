@@ -113,8 +113,7 @@ std::vector<T> readDataset(hid_t file, const std::string &dataset_name) {
 
 }  // namespace
 
-void Hdf5FileReader::read(hid_t file, const TenxFileParams &params,
-                          SparseMatrix &matrix) {
+SvtSparseMatrix Hdf5FileReader::read(hid_t file, const TenxFileParams &params) {
     // Read non-zero matrix entries in CSC format.
     const std::string indices_dataset = indicesDataset(params);
     const std::string data_dataset = dataDataset(params);
@@ -159,11 +158,9 @@ void Hdf5FileReader::read(hid_t file, const TenxFileParams &params,
         }
     }
 
-    matrix.init(MatrixMetadata{.nrow = static_cast<int>(dims[0]),
-                               .ncol = static_cast<int>(dims[1]),
-                               .nval = nz_data.size(),
-                               .row_names = std::move(row_names),
-                               .col_names = std::move(col_names)});
+    // Initialize SVT matrix with dims[1] columns, each containing 2 vectors
+    // with row and value information.
+    Svt svt(dims[1], SvtEntry(2));
 
     int col = 0;
     const int num_cols = col_inds.size() - 1;
@@ -174,13 +171,16 @@ void Hdf5FileReader::read(hid_t file, const TenxFileParams &params,
         if (col == num_cols) {
             break;
         }
-        // Shift row and column by +1 for 1-based indexing.
-        const MatrixData entry =
-            MatrixData{.row = static_cast<int>(nz_rows[i]) + 1,
-                       .col = col + 1,
-                       .val = static_cast<int>(nz_data[i])};
-        matrix.addEntry(entry);
+        svt[col][kSvtRowInd].emplace_back(static_cast<int>(nz_rows[i]));
+        svt[col][kSvtValInd].emplace_back(static_cast<int>(nz_data[i]));
     }
+
+    return SvtSparseMatrix(std::move(svt),
+                           MatrixMetadata{.nrow = static_cast<int>(dims[0]),
+                                          .ncol = static_cast<int>(dims[1]),
+                                          .nval = nz_data.size(),
+                                          .row_names = std::move(row_names),
+                                          .col_names = std::move(col_names)});
 }
 
 }  // namespace smallcount

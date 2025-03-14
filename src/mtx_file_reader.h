@@ -11,11 +11,12 @@ namespace smallcount {
 // File reader to construct sparse matrices from .mtx files.
 class MtxFileReader {
    public:
-    // Reads the contents of an .mtx file into a SparseMatrix object, labelling
+    // Converts the contents of an .mtx file into an SvtSparseMatrix, labelling
     // the rows and columns with features and barcodes, respectively.
-    static void read(std::ifstream &matrix_file, std::ifstream &barcodes_file,
-                     std::ifstream &features_file, const TenxFileParams &params,
-                     SparseMatrix &matrix);
+    static SvtSparseMatrix read(std::ifstream &matrix_file,
+                                std::ifstream &barcodes_file,
+                                std::ifstream &features_file,
+                                const TenxFileParams &params);
 
    private:
     // Static class. Should not be instantiated.

@@ -187,14 +187,11 @@ validate_sample <- function(filepath) {
 read_sparse_matrix <- function(sample,
                                col.names = FALSE,
                                row.names = c("id", "symbol"),
-                               genome = NULL,
-                               representation = c("svt", "coo")) {
+                               genome = NULL) {
   sample <- unzip_file(sample)
   sample <- validate_sample(sample)
   id_row_names <- match.arg(row.names) == "id"
   genome <- ifelse(is.null(genome), "", genome)
   features_tsv <- file.exists(paste0(sample, "features.tsv"))
-  representation <- match.arg(representation)
-  cppReadSparseMatrix(sample, col.names, id_row_names, genome, features_tsv,
-                      representation)
+  cppReadSparseMatrix(sample, col.names, id_row_names, genome, features_tsv)
 }

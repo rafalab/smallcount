@@ -13,9 +13,9 @@ namespace smallcount {
 // Static class to parse SparseMatrix objects.
 class SparseMatrixFileReader {
    public:
-    // Reads a SparseMatrix object from a file or directory.
-    static SEXP read(const std::string &filepath, const std::string &rep,
-                     const TenxFileParams &params);
+    // Reads a sparse matrix from a file or directory, returning an SVT
+    // representation.
+    static SEXP read(const std::string &filepath, const TenxFileParams &params);
 };
 
 }  // namespace smallcount

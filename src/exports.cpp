@@ -10,7 +10,7 @@ using namespace Rcpp;
 // [[Rcpp::export]]
 SEXP cppReadSparseMatrix(std::string sample, bool barcode_col_names,
                          bool id_row_names, std::string genome,
-                         bool use_features_tsv, std::string rep) {
+                         bool use_features_tsv) {
     smallcount::TenxFileParams file_params;
     file_params.use_barcode_col_names = barcode_col_names;
     file_params.use_id_row_names = id_row_names;
@@ -18,5 +18,5 @@ SEXP cppReadSparseMatrix(std::string sample, bool barcode_col_names,
         file_params.genome.emplace(genome);
     }
     file_params.use_features_tsv = use_features_tsv;
-    return smallcount::SparseMatrixFileReader::read(sample, rep, file_params);
+    return smallcount::SparseMatrixFileReader::read(sample, file_params);
 }

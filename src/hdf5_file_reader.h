@@ -13,9 +13,8 @@ namespace smallcount {
 // File reader to construct sparse matrices from Cell Ranger HDF5 files.
 class Hdf5FileReader {
    public:
-    // Reads the contents of an HDF5 file into a SparseMatrix object.
-    static void read(hid_t file, const TenxFileParams &params,
-                     SparseMatrix &matrix);
+    // Converts the contents of an HDF5 file into an SvtSparseMatrix.
+    static SvtSparseMatrix read(hid_t file, const TenxFileParams &params);
 
    private:
     // Static class. Should not be instantiated.

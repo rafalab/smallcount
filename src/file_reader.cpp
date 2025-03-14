@@ -36,51 +36,51 @@ std::ifstream openFile(const std::string &filepath) {
     return file;
 }
 
-void readCsvFile(const std::string &filepath, SparseMatrix &matrix) {
+SEXP readCsvFile(const std::string &filepath) {
     std::ifstream file = openFile(filepath);
-    CsvFileReader::read(file, matrix);
+    SvtSparseMatrix matrix = CsvFileReader::read(file);
     file.close();
+
+    return matrix.toRcpp();
 }
 
-void readMtxFile(const std::string &filedir, const TenxFileParams &params,
-                 SparseMatrix &matrix) {
+SEXP readMtxFile(const std::string &filedir, const TenxFileParams &params) {
     std::ifstream matrix_file = openFile(filedir + "matrix.mtx");
     std::ifstream barcodes_file = openFile(filedir + "barcodes.tsv");
     const std::string features_filename =
         params.use_features_tsv ? "features.tsv" : "genes.tsv";
     std::ifstream features_file = openFile(filedir + features_filename);
-    MtxFileReader::read(matrix_file, barcodes_file, features_file, params,
-                        matrix);
+    SvtSparseMatrix matrix =
+        MtxFileReader::read(matrix_file, barcodes_file, features_file, params);
     matrix_file.close();
     barcodes_file.close();
     features_file.close();
+
+    return matrix.toRcpp();
 }
 
-void readHdf5File(const std::string &filepath, const TenxFileParams &params,
-                  SparseMatrix &matrix) {
+SEXP readHdf5File(const std::string &filepath, const TenxFileParams &params) {
     hid_t file = H5Fopen(filepath.c_str(), H5F_ACC_RDONLY, H5P_DEFAULT);
     if (file < 0) {
         stop("Could not open file: %s", filepath);
     }
-    Hdf5FileReader::read(file, params, matrix);
+    SvtSparseMatrix matrix = Hdf5FileReader::read(file, params);
     H5Fclose(file);
+
+    return matrix.toRcpp();
 }
 
 }  // namespace
 
 SEXP SparseMatrixFileReader::read(const std::string &filepath,
-                                  const std::string &rep,
                                   const TenxFileParams &params) {
     const std::string file_extension = get_extension(filepath);
-    std::unique_ptr<SparseMatrix> matrix = SparseMatrix::create(rep);
     if (file_extension == kCsv) {
-        readCsvFile(filepath, *matrix);
+        return readCsvFile(filepath);
     } else if (file_extension == kHdf5) {
-        readHdf5File(filepath, params, *matrix);
-    } else {
-        readMtxFile(filepath, params, *matrix);
+        return readHdf5File(filepath, params);
     }
-    return matrix->toRcpp();
+    return readMtxFile(filepath, params);
 }
 
 }  // namespace smallcount

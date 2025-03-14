@@ -10,8 +10,8 @@ namespace smallcount {
 // File reader to construct sparse matrices from .csv files.
 class CsvFileReader {
    public:
-    // Reads the contents of a .csv file into a SparseMatrix object.
-    static void read(std::ifstream &file, SparseMatrix &matrix);
+    // Converts the contents of a .csv file into an SvtSparseMatrix.
+    static SvtSparseMatrix read(std::ifstream &file);
 
    private:
     // Static class. Should not be instantiated.
