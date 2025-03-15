@@ -9,6 +9,7 @@ Imports:
     methods,
     R.utils,
     Rcpp (>= 1.0.13),
+    Rhdf5lib,
     RSpectra,
     SparseArray
 Maintainer: Rafael A. Irizarry <rafael_irizarry@dfci.harvard.edu>
@@ -19,7 +20,9 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 LinkingTo: 
-    Rcpp
+    Rcpp,
+    Rhdf5lib
 Suggests: 
     testthat (>= 3.0.0)
+SystemRequirements: GNU make
 Config/testthat/edition: 3
