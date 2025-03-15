@@ -109,30 +109,6 @@ std::optional<MtxLine> parseMtxLine(const std::string &line, size_t line_num) {
 
 }  // namespace
 
-void sortRowIndices(SvtEntry &col) {
-    // Check if already sorted.
-    if(std::is_sorted(col[kSvtRowInd].begin(), col[kSvtRowInd].end())) {
-        return;
-    }
-
-    // Create vector of indices sorted by row.
-    std::vector<size_t> indices(col[kSvtRowInd].size());
-    std::iota(indices.begin(), indices.end(), 0);
-    std::sort(indices.begin(), indices.end(), [&](size_t i, size_t j) {
-        return col[kSvtRowInd][i] < col[kSvtRowInd][j];
-    });
-
-    // Sort parallel arrays by row index.
-    std::vector<int> sorted_rows(col[kSvtRowInd].size());
-    std::vector<int> sorted_vals(col[kSvtValInd].size());
-    for (size_t i = 0; i < indices.size(); ++i) {
-        sorted_rows[i] = col[kSvtRowInd][indices[i]];
-        sorted_vals[i] = col[kSvtValInd][indices[i]];
-    }
-    col[kSvtRowInd] = std::move(sorted_rows);
-    col[kSvtValInd] = std::move(sorted_vals);
-}
-
 SvtSparseMatrix MtxFileReader::read(std::ifstream &matrix_file,
                                     std::ifstream &barcodes_file,
                                     std::ifstream &features_file,
@@ -164,10 +140,6 @@ SvtSparseMatrix MtxFileReader::read(std::ifstream &matrix_file,
             "Inconsistent entry count. Number of non-zero entries does not "
             "match the total specified in the matrix metadata (%zu != %zu).",
             non_zero_count, metadata.nval);
-    }
-
-    for (auto &col : svt) {
-        sortRowIndices(col);
     }
 
     return SvtSparseMatrix(std::move(svt), std::move(metadata));

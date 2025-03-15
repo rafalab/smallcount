@@ -31,9 +31,44 @@ List createDimNamesList(std::vector<std::string> row_names,
     return dim_names;
 }
 
+void sortRowIndices(SvtEntry &col) {
+    // Check if already sorted.
+    if (std::is_sorted(col[kSvtRowInd].begin(), col[kSvtRowInd].end())) {
+        return;
+    }
+
+    // Check if reverse sorted.
+    if (std::is_sorted(col[kSvtRowInd].begin(), col[kSvtRowInd].end(),
+                       std::greater<int>())) {
+        std::reverse(col[kSvtRowInd].begin(), col[kSvtRowInd].end());
+        std::reverse(col[kSvtValInd].begin(), col[kSvtValInd].end());
+        return;
+    }
+
+    // Create vector of indices sorted by row.
+    std::vector<size_t> indices(col[kSvtRowInd].size());
+    std::iota(indices.begin(), indices.end(), 0);
+    std::sort(indices.begin(), indices.end(), [&](size_t i, size_t j) {
+        return col[kSvtRowInd][i] < col[kSvtRowInd][j];
+    });
+
+    // Sort parallel arrays by row index.
+    std::vector<int> sorted_rows(col[kSvtRowInd].size());
+    std::vector<int> sorted_vals(col[kSvtValInd].size());
+    for (size_t i = 0; i < indices.size(); ++i) {
+        sorted_rows[i] = col[kSvtRowInd][indices[i]];
+        sorted_vals[i] = col[kSvtValInd][indices[i]];
+    }
+    col[kSvtRowInd] = std::move(sorted_rows);
+    col[kSvtValInd] = std::move(sorted_vals);
+}
+
 }  // namespace
 
 List SvtSparseMatrix::createSvtList(Svt svt) {
+    for (auto &col : svt) {
+        sortRowIndices(col);
+    }
     const int ncol = svt.size();
     List svt_list = List(ncol);
     for (int i = 0; i < ncol; i++) {
