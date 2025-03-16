@@ -1,6 +1,6 @@
 #' Poisson Deviance
 #'
-#' @param y Sparse matrix (can be a base matrix, dgCMatrix, or SparseMatrix).
+#' @param y Sparse matrix (can be a matrix, dgCMatrix, or SparseMatrix).
 #' @param rate Row-wise rates.
 #' @param n Total counts in each column.
 #'

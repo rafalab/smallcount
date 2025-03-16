@@ -7,7 +7,7 @@
 poissonDeviance(y, rate = NULL, n = NULL)
 }
 \arguments{
-\item{y}{Sparse matrix (can be a base matrix, dgCMatrix, or SparseMatrix).}
+\item{y}{Sparse matrix (can be a matrix, dgCMatrix, or SparseMatrix).}
 
 \item{rate}{Row-wise rates.}
 

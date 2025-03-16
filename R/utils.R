@@ -1,14 +1,14 @@
 #' Convert a sparse matrix to a SparseMatrix object
 #'
-#' @param y Sparse matrix (can be a base matrix, dgCMatrix, or SparseMatrix).
+#' @param y Sparse matrix (can be a matrix, dgCMatrix, or SparseMatrix).
 #'
-#' @import methods
-#' @noRd
+#' @importFrom methods as is
+#' @keywords internal
 convert_to_sparse <- function(y) {
   if (is(y, "matrix") || is(y, "dgCMatrix")) {
     y <- as(y, "SparseMatrix")
   } else if (!is(y, "SparseMatrix")) {
-    stop("y must be a base matrix, dgCMatrix, or SparseMatrix")
+    stop("y must be a matrix, dgCMatrix, or SparseMatrix")
   }
   return(y)
 }
@@ -19,7 +19,7 @@ convert_to_sparse <- function(y) {
 #' @param default Default column sums
 #'
 #' @importFrom SparseArray colSums
-#' @noRd
+#' @keywords internal
 colsums_with_default <- function(y, default) {
   if (!is.null(default)) {
     return(default)
@@ -33,7 +33,7 @@ colsums_with_default <- function(y, default) {
 #' @param default Default row-wise rates
 #'
 #' @importFrom SparseArray colSums
-#' @noRd
+#' @keywords internal
 row_rates_with_default <- function(y, default) {
   if (!is.null(default)) {
     return(default)
@@ -46,7 +46,8 @@ row_rates_with_default <- function(y, default) {
 #'
 #' @param a Numerator
 #' @param b Denominator
-#' @noRd
+#' 
+#' @keywords internal
 safe_divide <- function(a, b) {
   ifelse(b == 0, 0, a / b)
 }
@@ -55,7 +56,8 @@ safe_divide <- function(a, b) {
 #'
 #' @param y SparseMatrix object
 #' @param nz_ind Linear indices of non-zero values
-#' @noRd
+#' 
+#' @keywords internal
 get_nz_rows <- function(y, nz_ind) {
   (nz_ind - 1) %% nrow(y) + 1
 }
@@ -64,7 +66,8 @@ get_nz_rows <- function(y, nz_ind) {
 #'
 #' @param y SparseMatrix object
 #' @param nz_ind Linear indices of non-zero values
-#' @noRd
+#' 
+#' @keywords internal
 get_nz_cols <- function(y, nz_ind) {
   (nz_ind - 1) %/% nrow(y) + 1
 }
@@ -75,7 +78,8 @@ get_nz_cols <- function(y, nz_ind) {
 #' @param rate Vector of row rates
 #' @param n Vector of column sums
 #' @return Vector of mu values for non-zero entries
-#' @noRd
+#' 
+#' @keywords internal
 calculate_mu <- function(y, nz_ind, rate, n) {
   nz_rows <- get_nz_rows(y, nz_ind)
   nz_cols <- get_nz_cols(y, nz_ind)

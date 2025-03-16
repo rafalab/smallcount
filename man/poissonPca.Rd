@@ -7,7 +7,7 @@
 poissonPca(y, k = 50, transform = NULL, center = FALSE, scale = FALSE)
 }
 \arguments{
-\item{y}{Sparse matrix (can be a base matrix, dgCMatrix, or SparseMatrix).}
+\item{y}{Sparse matrix (can be a matrix, dgCMatrix, or SparseMatrix).}
 
 \item{k}{Number of principal components to return. Default 50.}
 

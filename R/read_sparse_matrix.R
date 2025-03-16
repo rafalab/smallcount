@@ -52,7 +52,7 @@ unzip_helper <- function(file, unzip_func, temp_dir) {
 #' 
 #' @import R.utils
 #' @import tools
-#' @noRd
+#' @keywords internal
 unzip_file <- function(filepath, temp_dir = tempdir()) {
   output_file <- filepath
   compressed_file_ext <- tolower(tools::file_ext(filepath))
@@ -98,7 +98,7 @@ validate_tenx_directory <- function(directory, prefix) {
 #' @return character(1) potentially updated file path.
 #' 
 #' @import tools
-#' @noRd
+#' @keywords internal
 validate_sample <- function(filepath) {
   file_ext <- tolower(tools::file_ext(filepath))
   if (file_ext == "h5" || file_ext == "csv") {

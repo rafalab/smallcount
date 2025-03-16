@@ -6,10 +6,10 @@
 #' @param offset1,offset2 Vectors whose product is the difference between `y`
 #'   and the residual matrix.
 #'
-#' @import RSpectra
-#' @noRd
+#' @importFrom RSpectra eigs_sym
+#' @keywords internal
 compute_pca <- function(rtr, k, y, offset1 = NULL, offset2 = NULL) {
-  e <- RSpectra::eigs_sym(rtr, k = k)
+  e <- eigs_sym(rtr, k = k)
   x <- crossprod(y, e$vectors)
   if (!is.null(offset1) && !is.null(offset2)) {
     x <- x - (offset2 %*% crossprod(offset1, e$vectors))
@@ -24,7 +24,7 @@ compute_pca <- function(rtr, k, y, offset1 = NULL, offset2 = NULL) {
 #' @param row_offset,col_offset Vectors whose product subtracted from `y` gives
 #'   the residual matrix.
 #'
-#' @noRd
+#' @keywords internal
 raw_residuals_pca <- function(y, k, row_offset, col_offset) {
   y2 <- tcrossprod(y)
   yu <- (y %*% as.matrix(col_offset)) %*% row_offset
@@ -40,7 +40,7 @@ raw_residuals_pca <- function(y, k, row_offset, col_offset) {
 #' @inheritParams raw_residuals_pca
 #'
 #' @importFrom SparseArray nzwhich
-#' @noRd
+#' @keywords internal
 poisson_pearson_residuals_pca <- function(y, k) {
   n <- colSums(y)
   total <- sum(n)
@@ -62,7 +62,7 @@ poisson_pearson_residuals_pca <- function(y, k) {
 #' @inheritParams raw_residuals_pca
 #'
 #' @importFrom SparseArray nzwhich
-#' @noRd
+#' @keywords internal
 poisson_deviance_residuals_pca <- function(y, k) {
   n <- colSums(y)
   rate <- rowSums(y) / sum(n)
@@ -97,7 +97,7 @@ get_count_transform <- function(transform, center, scale, coef) {
 
 #' Principal Component Analysis on Poisson data
 #'
-#' @param y Sparse matrix (can be a base matrix, dgCMatrix, or SparseMatrix).
+#' @param y Sparse matrix (can be a matrix, dgCMatrix, or SparseMatrix).
 #' @param k Number of principal components to return. Default 50.
 #' @param transform CountTransform object or character(1) specifying a
 #'   transformation to apply to `y` before PCA. Arguments `center` and `scale`

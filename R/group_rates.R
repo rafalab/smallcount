@@ -1,6 +1,6 @@
 #' Row-wise Rates for Groups
 #'
-#' @param y Sparse matrix (can be a base matrix, dgCMatrix, or SparseMatrix).
+#' @param y Sparse matrix (can be a matrix, dgCMatrix, or SparseMatrix).
 #' @param g Factor specifying the group for each column.
 #'
 #' @importFrom SparseArray nzvals nzwhich
