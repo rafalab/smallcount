@@ -29,7 +29,7 @@ setClass(
 
 # Helper function so that users can specify a single logical value for whether
 # the rows of the data should be centered.
-get_duplicated_argument <- function(arg, name) {
+.getDuplicatedArgument <- function(arg, name) {
   if (length(arg == 1)) c(arg, FALSE) else arg
 }
 
@@ -50,7 +50,7 @@ get_duplicated_argument <- function(arg, name) {
 #' @examples
 #' triple <- CountTransform(function(x) 3 * x, center = FALSE, scale = FALSE)
 CountTransform <- function(func, center = FALSE, scale = FALSE) {
-  center <- get_duplicated_argument(center, "center")
+  center <- .getDuplicatedArgument(center, "center")
   new("CountTransform", func = func, center_rows = center[1],
       center_cols = center[2], scale = scale)
 }
@@ -97,7 +97,7 @@ TransformedMatrix <- function(y, transform) {
     # Calculate the standard deviations of the rows.
     sds <- sqrt((rowSums(y^2) - rowSums(y)^2 / ncol(y)) / (ncol(y) - 1))
     nz_ind <- nzwhich(y)
-    nz_rows <- get_nz_rows(y, nz_ind)
+    nz_rows <- .nzrows(y, nz_ind)
     y[nz_ind] <- y[nz_ind] / sds[nz_rows]
   }
 

@@ -4,7 +4,7 @@
 #'
 #' @importFrom methods as is
 #' @keywords internal
-convert_to_sparse <- function(y) {
+.convertToSparse <- function(y) {
   if (is(y, "matrix") || is(y, "dgCMatrix")) {
     y <- as(y, "SparseMatrix")
   } else if (!is(y, "SparseMatrix")) {
@@ -20,7 +20,7 @@ convert_to_sparse <- function(y) {
 #'
 #' @importFrom SparseArray colSums
 #' @keywords internal
-colsums_with_default <- function(y, default) {
+.colsumsWithDefault <- function(y, default) {
   if (!is.null(default)) {
     return(default)
   }
@@ -34,7 +34,7 @@ colsums_with_default <- function(y, default) {
 #'
 #' @importFrom SparseArray colSums
 #' @keywords internal
-row_rates_with_default <- function(y, default) {
+.rowRatesWithDefault <- function(y, default) {
   if (!is.null(default)) {
     return(default)
   }
@@ -48,7 +48,7 @@ row_rates_with_default <- function(y, default) {
 #' @param b Denominator
 #' 
 #' @keywords internal
-safe_divide <- function(a, b) {
+.safeDivide <- function(a, b) {
   ifelse(b == 0, 0, a / b)
 }
 
@@ -58,7 +58,7 @@ safe_divide <- function(a, b) {
 #' @param nz_ind Linear indices of non-zero values
 #' 
 #' @keywords internal
-get_nz_rows <- function(y, nz_ind) {
+.nzrows <- function(y, nz_ind) {
   (nz_ind - 1) %% nrow(y) + 1
 }
 
@@ -68,7 +68,7 @@ get_nz_rows <- function(y, nz_ind) {
 #' @param nz_ind Linear indices of non-zero values
 #' 
 #' @keywords internal
-get_nz_cols <- function(y, nz_ind) {
+.nzcols <- function(y, nz_ind) {
   (nz_ind - 1) %/% nrow(y) + 1
 }
 
@@ -80,8 +80,8 @@ get_nz_cols <- function(y, nz_ind) {
 #' @return Vector of mu values for non-zero entries
 #' 
 #' @keywords internal
-calculate_mu <- function(y, nz_ind, rate, n) {
-  nz_rows <- get_nz_rows(y, nz_ind)
-  nz_cols <- get_nz_cols(y, nz_ind)
+.calculateMu <- function(y, nz_ind, rate, n) {
+  nz_rows <- .nzrows(y, nz_ind)
+  nz_cols <- .nzcols(y, nz_ind)
   rate[nz_rows] * n[nz_cols]
 }

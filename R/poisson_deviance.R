@@ -12,12 +12,12 @@
 #' hist(dev, nclass = 50)
 #' @export
 poissonDeviance <- function(y, rate = NULL, n = NULL) {
-  y <- convert_to_sparse(y)
-  n <- colsums_with_default(y, n)
-  rate <- row_rates_with_default(y, rate)
+  y <- .convertToSparse(y)
+  n <- .colsumsWithDefault(y, n)
+  rate <- .rowRatesWithDefault(y, rate)
 
   nz_ind <- nzwhich(y)
-  mu <- calculate_mu(y, nz_ind, rate, n)
+  mu <- .calculateMu(y, nz_ind, rate, n)
   y[nz_ind] <- y[nz_ind] * log(y[nz_ind] / mu)
   2 * rowSums(y)
 }

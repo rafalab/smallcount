@@ -8,7 +8,7 @@
 #'
 #' @importFrom RSpectra eigs_sym
 #' @keywords internal
-compute_pca <- function(rtr, k, y, offset1 = NULL, offset2 = NULL) {
+.computePca <- function(rtr, k, y, offset1 = NULL, offset2 = NULL) {
   e <- eigs_sym(rtr, k = k)
   x <- crossprod(y, e$vectors)
   if (!is.null(offset1) && !is.null(offset2)) {
@@ -25,63 +25,63 @@ compute_pca <- function(rtr, k, y, offset1 = NULL, offset2 = NULL) {
 #'   the residual matrix.
 #'
 #' @keywords internal
-raw_residuals_pca <- function(y, k, row_offset, col_offset) {
+.rawResidualsPca <- function(y, k, row_offset, col_offset) {
   y2 <- tcrossprod(y)
   yu <- (y %*% as.matrix(col_offset)) %*% row_offset
   u2 <- sum(col_offset ^ 2) * outer(row_offset, row_offset)
   
   # Cross product of residuals
   rtr <- y2 - yu - t(yu) + u2
-  compute_pca(rtr, k, y, row_offset, col_offset)
+  .computePca(rtr, k, y, row_offset, col_offset)
 }
 
 #' Principal component analysis on Pearson residuals
 #'
-#' @inheritParams raw_residuals_pca
+#' @inheritParams .rawResidualsPca
 #'
 #' @importFrom SparseArray nzwhich
 #' @keywords internal
-poisson_pearson_residuals_pca <- function(y, k) {
+.poissonPearsonResidualsPca <- function(y, k) {
   n <- colSums(y)
   total <- sum(n)
 
   nz_ind <- nzwhich(y)
   sqrt_rate <- sqrt(rowSums(y) / total)
   sqrt_n <- sqrt(n)
-  sqrt_mu <- calculate_mu(y, nz_ind, sqrt_rate, sqrt_n)
+  sqrt_mu <- .calculateMu(y, nz_ind, sqrt_rate, sqrt_n)
   y[nz_ind] <- y[nz_ind] / sqrt_mu
   scaled_y2 <- tcrossprod(y)
 
   # Cross product of residuals
   rtr <- scaled_y2 - total * outer(sqrt_rate, sqrt_rate)
-  compute_pca(rtr, k, y, sqrt_rate, sqrt_n)
+  .computePca(rtr, k, y, sqrt_rate, sqrt_n)
 }
 
 #' Principal component analysis on deviance residuals
 #'
-#' @inheritParams raw_residuals_pca
+#' @inheritParams .rawResidualsPca
 #'
 #' @importFrom SparseArray nzwhich
 #' @keywords internal
-poisson_deviance_residuals_pca <- function(y, k) {
+.poissonDevianceResidualsPca <- function(y, k) {
   n <- colSums(y)
   rate <- rowSums(y) / sum(n)
   ys <- nzvals(y)
   nz_ind <- nzwhich(y)
-  mu <- calculate_mu(y, nz_ind, rate, n)
+  mu <- .calculateMu(y, nz_ind, rate, n)
   
   deviance <- 2 * (ys * log(ys / mu) - ys + mu)
   y[nz_ind] <- sign(ys - mu) * sqrt(deviance) + sqrt(2 * mu)
   
-  raw_residuals_pca(y, k, sqrt(2 * rate), sqrt(n))  
+  .rawResidualsPca(y, k, sqrt(2 * rate), sqrt(n))  
 }
 
 # Map of residual types to PCA functions
-RESIDUAL_PCA <- list(pearson = poisson_pearson_residuals_pca,
-                     deviance = poisson_deviance_residuals_pca)
+RESIDUAL_PCA <- list(pearson = .poissonPearsonResidualsPca,
+                     deviance = .poissonDevianceResidualsPca)
 
 # Converts a NULL value or a character string to a CountTransform object.
-get_count_transform <- function(transform, center, scale, coef) {
+.getCountTransform <- function(transform, center, scale, coef) {
   if (is.null(transform)) {
     return(identity_transform(center, scale))
   }
@@ -122,13 +122,13 @@ get_count_transform <- function(transform, center, scale, coef) {
 #' @export
 poissonPca <- function(y, k = 50, transform = NULL, center = FALSE,
                         scale = FALSE) {
-  y <- convert_to_sparse(y)
+  y <- .convertToSparse(y)
 
   if (is.character(transform) && (transform %in% names(RESIDUAL_PCA))) {
     return(RESIDUAL_PCA[[transform]](y, k))
   } else if (is.character(transform) || is.null(transform)) {
     coef <- median(colSums(y))
-    transform <- get_count_transform(transform, center, scale, coef)
+    transform <- .getCountTransform(transform, center, scale, coef)
   }
 
   if (!is(transform, "CountTransform")) {
@@ -138,8 +138,8 @@ poissonPca <- function(y, k = 50, transform = NULL, center = FALSE,
 
   tmatrix <- TransformedMatrix(y, transform)
   if (is.null(tmatrix@row_offset)) {
-    uncentered_pca <- compute_pca(tcrossprod(tmatrix@y), k, tmatrix@y)
+    uncentered_pca <- .computePca(tcrossprod(tmatrix@y), k, tmatrix@y)
     return(uncentered_pca)
   }
-  raw_residuals_pca(tmatrix@y, k, tmatrix@row_offset, tmatrix@col_offset)
+  .rawResidualsPca(tmatrix@y, k, tmatrix@row_offset, tmatrix@col_offset)
 }
