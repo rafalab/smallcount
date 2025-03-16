@@ -12,12 +12,15 @@ namespace smallcount {
 namespace {
 
 static constexpr char kSvtSparseMatrix[] = "SVT_SparseMatrix";
-static constexpr char kSvt[] = "SVT";
-static constexpr char kType[] = "type";
-static constexpr char kInteger[] = "integer";
 
+static constexpr char kSvt[] = "SVT";
+static constexpr char kSvtVersion[] = ".svt_version";
+static constexpr char kType[] = "type";
 static constexpr char kDim[] = "dim";
 static constexpr char kDimNames[] = "dimnames";
+
+static constexpr int kVersionNum = 1;
+static constexpr char kInteger[] = "integer";
 
 List createDimNamesList(std::vector<std::string> row_names,
                         std::vector<std::string> col_names) {
@@ -89,6 +92,7 @@ SEXP SvtSparseMatrix::toRcpp() {
     obj.slot(kDimNames) = createDimNamesList(std::move(metadata.row_names),
                                              std::move(metadata.col_names));
     obj.slot(kType) = kInteger;
+    obj.slot(kSvtVersion) = kVersionNum;
     return obj;
 }
 

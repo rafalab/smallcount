@@ -11,8 +11,9 @@ using namespace Rcpp;
 
 namespace smallcount {
 
-static constexpr int kSvtRowInd = 0;  // Index of row information in SVT entry
-static constexpr int kSvtValInd = 1;  // Index of value information in SVT entry
+// Indices of parallel arrays in SparseArray >= 1.5.0
+static constexpr int kSvtValInd = 0;  // Index of value information in SVT entry
+static constexpr int kSvtRowInd = 1;  // Index of row information in SVT entry
 
 // Pair of parallel arrays containing the row and value, respectively, of each
 // non-zero entry in a given column.
