@@ -14,10 +14,12 @@ groupRates <- function(y, g) {
   }
 
   # Compute row sums for each group
-  nz_ind <- nzwhich(y, arr.ind = TRUE)
+  nz_ind <- nzwhich(y)
+  nz_rows <- get_nz_rows(y, nz_ind)
+  nz_cols <- get_nz_cols(y, nz_ind)
   group_sums <- tapply(nzvals(y),
-                       list(factor(nz_ind[, 1], levels=1:nrow(y)),
-                            g[nz_ind[, 2]]),
+                       list(factor(nz_rows, levels=1:nrow(y)),
+                            g[nz_cols]),
                        sum, default = 0)
 
   # Standardize column sums to 1

@@ -43,14 +43,18 @@ raw_residuals_pca <- function(y, k, row_offset, col_offset) {
 #' @noRd
 poisson_pearson_residuals_pca <- function(y, k) {
   n <- colSums(y)
-  sqrt_rate <- sqrt(rowSums(y) / sum(n))
-  nz_ind <- nzwhich(y, arr.ind = TRUE)
-  y[nz_ind] <- y[nz_ind] / (sqrt_rate[nz_ind[, 1]] * sqrt(n)[nz_ind[, 2]])
+  total <- sum(n)
+
+  nz_ind <- nzwhich(y)
+  sqrt_rate <- sqrt(rowSums(y) / total)
+  sqrt_n <- sqrt(n)
+  sqrt_mu <- calculate_mu(y, nz_ind, sqrt_rate, sqrt_n)
+  y[nz_ind] <- y[nz_ind] / sqrt_mu
   scaled_y2 <- tcrossprod(y)
-  
+
   # Cross product of residuals
-  rtr <- scaled_y2 - sum(n) * outer(sqrt_rate, sqrt_rate)
-  compute_pca(rtr, k, y, sqrt_rate, sqrt(n))
+  rtr <- scaled_y2 - total * outer(sqrt_rate, sqrt_rate)
+  compute_pca(rtr, k, y, sqrt_rate, sqrt_n)
 }
 
 #' Principal component analysis on deviance residuals
@@ -63,8 +67,8 @@ poisson_deviance_residuals_pca <- function(y, k) {
   n <- colSums(y)
   rate <- rowSums(y) / sum(n)
   ys <- nzvals(y)
-  nz_ind <- nzwhich(y, arr.ind = TRUE)
-  mu <- rate[nz_ind[, 1]] * n[nz_ind[, 2]]
+  nz_ind <- nzwhich(y)
+  mu <- calculate_mu(y, nz_ind, rate, n)
   
   deviance <- 2 * (ys * log(ys / mu) - ys + mu)
   y[nz_ind] <- sign(ys - mu) * sqrt(deviance) + sqrt(2 * mu)

@@ -50,3 +50,34 @@ row_rates_with_default <- function(y, default) {
 safe_divide <- function(a, b) {
   ifelse(b == 0, 0, a / b)
 }
+
+#' Get the row indices of non-zero matrix values
+#'
+#' @param y SparseMatrix object
+#' @param nz_ind Linear indices of non-zero values
+#' @noRd
+get_nz_rows <- function(y, nz_ind) {
+  (nz_ind - 1) %% nrow(y) + 1
+}
+
+#' Get the column indices of non-zero matrix values
+#'
+#' @param y SparseMatrix object
+#' @param nz_ind Linear indices of non-zero values
+#' @noRd
+get_nz_cols <- function(y, nz_ind) {
+  (nz_ind - 1) %/% nrow(y) + 1
+}
+
+#' Calculate mu values from row rates and column sums
+#'
+#' @param y SparseMatrix object
+#' @param rate Vector of row rates
+#' @param n Vector of column sums
+#' @return Vector of mu values for non-zero entries
+#' @noRd
+calculate_mu <- function(y, nz_ind, rate, n) {
+  nz_rows <- get_nz_rows(y, nz_ind)
+  nz_cols <- get_nz_cols(y, nz_ind)
+  rate[nz_rows] * n[nz_cols]
+}

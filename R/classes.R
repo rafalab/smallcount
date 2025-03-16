@@ -96,8 +96,9 @@ TransformedMatrix <- function(y, transform) {
   if (transform@scale) {
     # Calculate the standard deviations of the rows.
     sds <- sqrt((rowSums(y^2) - rowSums(y)^2 / ncol(y)) / (ncol(y) - 1))
-    nz_ind <- nzwhich(y, arr.ind = TRUE)
-    y[nz_ind] <- y[nz_ind] / sds[nz_ind[, 1]]
+    nz_ind <- nzwhich(y)
+    nz_rows <- get_nz_rows(y, nz_ind)
+    y[nz_ind] <- y[nz_ind] / sds[nz_rows]
   }
 
   # Store the row/column centers if requested.

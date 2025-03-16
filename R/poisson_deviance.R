@@ -16,7 +16,8 @@ poissonDeviance <- function(y, rate = NULL, n = NULL) {
   n <- colsums_with_default(y, n)
   rate <- row_rates_with_default(y, rate)
 
-  nz_ind <- nzwhich(y, arr.ind = TRUE)
-  y[nz_ind] <- y[nz_ind] * log(y[nz_ind] / (rate[nz_ind[, 1]] * n[nz_ind[, 2]]))
+  nz_ind <- nzwhich(y)
+  mu <- calculate_mu(y, nz_ind, rate, n)
+  y[nz_ind] <- y[nz_ind] * log(y[nz_ind] / mu)
   2 * rowSums(y)
 }
