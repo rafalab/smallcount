@@ -5,3 +5,11 @@ cppReadSparseMatrix <- function(sample, barcode_col_names, id_row_names, genome,
     .Call('_smallcount_cppReadSparseMatrix', PACKAGE = 'smallcount', sample, barcode_col_names, id_row_names, genome, use_features_tsv)
 }
 
+cppPoissonDevianceTransformation <- function(svt, mu) {
+    .Call('_smallcount_cppPoissonDevianceTransformation', PACKAGE = 'smallcount', svt, mu)
+}
+
+cppPoissonDispersionTransformation <- function(svt, mu) {
+    .Call('_smallcount_cppPoissonDispersionTransformation', PACKAGE = 'smallcount', svt, mu)
+}
+

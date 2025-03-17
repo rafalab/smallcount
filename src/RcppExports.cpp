@@ -25,9 +25,35 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// cppPoissonDevianceTransformation
+List cppPoissonDevianceTransformation(List svt, NumericVector mu);
+RcppExport SEXP _smallcount_cppPoissonDevianceTransformation(SEXP svtSEXP, SEXP muSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List >::type svt(svtSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type mu(muSEXP);
+    rcpp_result_gen = Rcpp::wrap(cppPoissonDevianceTransformation(svt, mu));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cppPoissonDispersionTransformation
+List cppPoissonDispersionTransformation(List svt, NumericVector mu);
+RcppExport SEXP _smallcount_cppPoissonDispersionTransformation(SEXP svtSEXP, SEXP muSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List >::type svt(svtSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type mu(muSEXP);
+    rcpp_result_gen = Rcpp::wrap(cppPoissonDispersionTransformation(svt, mu));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_smallcount_cppReadSparseMatrix", (DL_FUNC) &_smallcount_cppReadSparseMatrix, 5},
+    {"_smallcount_cppPoissonDevianceTransformation", (DL_FUNC) &_smallcount_cppPoissonDevianceTransformation, 2},
+    {"_smallcount_cppPoissonDispersionTransformation", (DL_FUNC) &_smallcount_cppPoissonDispersionTransformation, 2},
     {NULL, NULL, 0}
 };
 

@@ -18,6 +18,8 @@ poissonDeviance <- function(y, rate = NULL, n = NULL) {
 
   nz_ind <- nzwhich(y)
   mu <- .calculateMu(y, nz_ind, rate, n)
-  y[nz_ind] <- y[nz_ind] * log(y[nz_ind] / mu)
+  # y[nz_ind] <- y[nz_ind] * log(y[nz_ind] / mu)
+  y@SVT <- cppPoissonDevianceTransformation(y@SVT, mu)
+  y@type <- "double"
   2 * rowSums(y)
 }

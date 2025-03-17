@@ -18,6 +18,8 @@ poissonDispersion <- function(y, rate = NULL, n = NULL) {
 
   nz_ind <- nzwhich(y)
   mu <- .calculateMu(y, nz_ind, rate, n)
-  y[nz_ind] <- y[nz_ind]^2 / mu
+  # y[nz_ind] <- y[nz_ind]^2 / mu
+  y@SVT <- cppPoissonDispersionTransformation(y@SVT, mu)
+  y@type <- "double"
   (rowSums(y) - sum(n) * rate) / (ncol(y) - 1)
 }
