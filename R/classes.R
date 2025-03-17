@@ -45,6 +45,8 @@ setClass(
 #' @param scale Whether transformed rows should be scaled to have unit variance.
 #'
 #' @return CountTransform object
+#' 
+#' @importFrom methods new
 #' @export
 #'
 #' @examples
@@ -82,6 +84,8 @@ setClass(
 #' @param transform Transformation to apply to `y`.
 #'
 #' @return TransformedMatrix object.
+#' 
+#' @importFrom methods new
 #' @export
 #'
 #' @examples

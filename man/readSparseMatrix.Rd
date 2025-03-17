@@ -33,17 +33,14 @@ Ensembl IDs.}
 
 \item{genome}{character(1) specifying the genome for HDF5 files output by
 CellRanger v2.}
-
-\item{representation}{character(1) specifying the internal SparseMatrix
-representation (Default "svt").}
 }
 \value{
-A \linkS4class{SparseMatrix} object containing count data for each
-gene (row) and cell (column) in \code{sample}.
+A \code{\link[SparseArray]{SparseMatrix}} object containing count
+data for each gene (row) and cell (column) in \code{sample}.
 }
 \description{
-Creates a \linkS4class{SparseMatrix} from the CellRanger output directories
-for 10X Genomics data.
+Creates a \code{\link[SparseArray]{SparseMatrix}} from the CellRanger output
+directories for 10X Genomics data.
 }
 \details{
 The signature of this function and its corresponding documentation

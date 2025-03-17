@@ -126,8 +126,8 @@ validate_sample <- function(filepath) {
 
 #' Load data from a 10X Genomics experiment
 #'
-#' Creates a \linkS4class{SparseMatrix} from the CellRanger output directories
-#' for 10X Genomics data.
+#' Creates a \code{\link[SparseArray]{SparseMatrix}} from the CellRanger output
+#' directories for 10X Genomics data.
 #'
 #' @param sample character(1) directory name corresponding to a 10X sample. The
 #'   directory should contain a matrix file, a gene/feature annotation file, and
@@ -147,11 +147,9 @@ validate_sample <- function(filepath) {
 #'   Ensembl IDs.
 #' @param genome character(1) specifying the genome for HDF5 files output by
 #'   CellRanger v2.
-#' @param representation character(1) specifying the internal SparseMatrix
-#'   representation (Default "svt").
 #'
-#' @return A \linkS4class{SparseMatrix} object containing count data for each
-#'   gene (row) and cell (column) in \code{sample}.
+#' @return A \code{\link[SparseArray]{SparseMatrix}} object containing count
+#'   data for each gene (row) and cell (column) in \code{sample}.
 #'
 #' @details The signature of this function and its corresponding documentation
 #' has largely been adapted from the \code{Read10xCounts} function in the
@@ -162,6 +160,7 @@ validate_sample <- function(filepath) {
 #' \code{colSums}, etc. will result in errors.
 #'
 #' @import Rcpp
+#' @import Rhdf5lib
 #' @import SparseArray
 #'
 #' @examples
