@@ -9,6 +9,9 @@ Thumbs.db
 .RData
 .Ruserdata
 
+# VSCode project files
+.vscode/
+
 # Package build files
 .Rbuildignore
 .Rinstignore
@@ -18,4 +21,3 @@ Thumbs.db
 # Binary files
 *.o
 *.so
-
