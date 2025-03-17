@@ -55,9 +55,11 @@ Note that user-level manipulation of sparse matrices requires loading of the
 \code{colSums}, etc. will result in errors.
 }
 \examples{
-data("tenx_subset")  # Original dataset
+data("tenx_subset") # Original dataset
 new <- readSparseMatrix(system.file(
-  "extdata/tenx_subset.csv.gz", package = "smallcount"))
+    "extdata/tenx_subset.csv.gz",
+    package = "smallcount"
+))
 identical(new, tenx_subset)
 
 }

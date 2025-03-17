@@ -12,14 +12,14 @@
 #' hist(dev, nclass = 50)
 #' @export
 poissonDeviance <- function(y, rate = NULL, n = NULL) {
-  y <- .convertToSparse(y)
-  n <- .colsumsWithDefault(y, n)
-  rate <- .rowRatesWithDefault(y, rate)
+    y <- .convertToSparse(y)
+    n <- .colsumsWithDefault(y, n)
+    rate <- .rowRatesWithDefault(y, rate)
 
-  nz_ind <- nzwhich(y)
-  mu <- .calculateMu(y, nz_ind, rate, n)
-  # y[nz_ind] <- y[nz_ind] * log(y[nz_ind] / mu)
-  y@SVT <- cppPoissonDevianceTransformation(y@SVT, mu)
-  y@type <- "double"
-  2 * rowSums(y)
+    nz_ind <- nzwhich(y)
+    mu <- .calculateMu(y, nz_ind, rate, n)
+    # y[nz_ind] <- y[nz_ind] * log(y[nz_ind] / mu)
+    y@SVT <- cppPoissonDevianceTransformation(y@SVT, mu)
+    y@type <- "double"
+    2 * rowSums(y)
 }

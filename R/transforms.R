@@ -14,7 +14,7 @@
 #' @return CountTransform object.
 #' @export
 identity_transform <- function(center = FALSE, scale = FALSE) {
-  CountTransform(NULL, center, scale)
+    CountTransform(NULL, center, scale)
 }
 
 #' Log1p Transformation
@@ -26,7 +26,7 @@ identity_transform <- function(center = FALSE, scale = FALSE) {
 #' @return CountTransform object.
 #' @export
 log1p_transform <- function(center = FALSE, scale = FALSE) {
-  CountTransform(log1p, center, scale)
+    CountTransform(log1p, center, scale)
 }
 
 #' Scaled Log1p Transformation
@@ -39,7 +39,7 @@ log1p_transform <- function(center = FALSE, scale = FALSE) {
 #' @return CountTransform object.
 #' @export
 scaled_log1p_transform <- function(coef, center = FALSE, scale = FALSE) {
-  CountTransform(function(y) log1p(coef * y), center, scale)
+    CountTransform(function(y) log1p(coef * y), center, scale)
 }
 
 #' CPM Log1p Transformation
@@ -51,5 +51,5 @@ scaled_log1p_transform <- function(coef, center = FALSE, scale = FALSE) {
 #' @return CountTransform object.
 #' @export
 cpm_log1p_transform <- function(center = FALSE, scale = FALSE) {
-  CountTransform(function(y) log1p(y / 1e6), center, scale)
+    CountTransform(function(y) log1p(y / 1e6), center, scale)
 }

@@ -18,7 +18,7 @@ TransformedMatrix object.
 TransformedMatrix Constructor.
 }
 \examples{
-mat <- as(matrix(c(1:9), nrow=3, ncol=3), "SVT_SparseMatrix")
+mat <- as(matrix(c(1:9), nrow = 3, ncol = 3), "SVT_SparseMatrix")
 triple <- CountTransform(function(x) 3 * x, center = FALSE, scale = FALSE)
 tripled_mat <- TransformedMatrix(mat, triple)
 }

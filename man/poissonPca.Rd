@@ -34,8 +34,8 @@ Principal Component Analysis on Poisson data
 data(tenx_subset)
 dim(tenx_subset)
 system.time({
-  pc <- poissonPca(tenx_subset, k = 10, transform = "pearson")
+    pc <- poissonPca(tenx_subset, k = 10, transform = "pearson")
 })
-plot(pc$x[,1:2])
+plot(pc$x[, 1:2])
 barplot(pc$sdev)
 }
