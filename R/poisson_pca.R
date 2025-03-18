@@ -121,8 +121,11 @@ RESIDUAL_PCA <- list(
 #' plot(pc$x[, 1:2])
 #' barplot(pc$sdev)
 #' @export
-poissonPca <- function(y, k = 50, transform = NULL, center = FALSE,
-                       scale = FALSE) {
+poissonPca <- function(
+    y, k = 50,
+    transform = NULL,
+    center = FALSE, scale = FALSE
+) {
     y <- .convertToSparse(y)
 
     if (is.character(transform) && (transform %in% names(RESIDUAL_PCA))) {

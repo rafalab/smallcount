@@ -176,23 +176,29 @@ validate_sample <- function(filepath) {
 #' 8:14049.
 #'
 #' 10X Genomics (2017). Gene-Barcode Matrices.
-#' \url{https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/2.2/output/matrices}
+#' \url{https://support.10xgenomics.com/single-cell-gene-expression/software/
+#' pipelines/2.2/output/matrices}
 #'
 #' 10X Genomics (2018). Feature-Barcode Matrices.
-#' \url{https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/output/matrices}
+#' \url{https://support.10xgenomics.com/single-cell-gene-expression/software/
+#' pipelines/latest/output/matrices}
 #'
 #' 10X Genomics (2018). HDF5 Gene-Barcode Matrix Format.
-#' \url{https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/2.2/advanced/h5_matrices}
+#' \url{https://support.10xgenomics.com/single-cell-gene-expression/software/
+#' pipelines/2.2/advanced/h5_matrices}
 #'
 #' 10X Genomics (2018). HDF5 Feature Barcode Matrix Format.
-#' \url{https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/advanced/h5_matrices}
+#' \url{https://support.10xgenomics.com/single-cell-gene-expression/software/
+#' pipelines/latest/advanced/h5_matrices}
 #'
 #' @export
 #' @useDynLib smallcount
-readSparseMatrix <- function(sample,
-                             col.names = FALSE,
-                             row.names = c("id", "symbol"),
-                             genome = NULL) {
+readSparseMatrix <- function(
+    sample,
+    col.names = FALSE,
+    row.names = c("id", "symbol"),
+    genome = NULL
+) {
     sample <- unzip_file(sample)
     sample <- validate_sample(sample)
     id_row_names <- match.arg(row.names) == "id"
