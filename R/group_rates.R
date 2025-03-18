@@ -19,7 +19,7 @@ groupRates <- function(y, g) {
     nz_cols <- .nzcols(y, nz_ind)
     group_sums <- tapply(nzvals(y),
         list(
-            factor(nz_rows, levels = 1:nrow(y)),
+            factor(nz_rows, levels = seq_len(nrow(y))),
             g[nz_cols]
         ),
         sum,

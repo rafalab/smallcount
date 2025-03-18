@@ -136,10 +136,10 @@ poissonPca <- function(
     }
 
     if (!is(transform, "CountTransform")) {
-        stop(paste0(
+        stop(
             "Invalid transform: ", transform,
             ". See documentation for supported options."
-        ))
+        )
     }
 
     tmatrix <- TransformedMatrix(y, transform)
