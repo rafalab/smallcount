@@ -7,7 +7,10 @@
 .convertToSparse(y)
 }
 \arguments{
-\item{y}{Sparse matrix (can be a matrix, dgCMatrix, or SparseMatrix).}
+\item{y}{Sparse matrix (can be a matrix, dgCMatrix, or SparseMatrix)}
+}
+\value{
+SparseMatrix object
 }
 \description{
 Convert a sparse matrix to a SparseMatrix object

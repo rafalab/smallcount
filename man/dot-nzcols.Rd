@@ -11,6 +11,9 @@
 
 \item{nz_ind}{Linear indices of non-zero values}
 }
+\value{
+Column indices of non-zero matrix values
+}
 \description{
 Get the column indices of non-zero matrix values
 }

@@ -7,12 +7,12 @@
 TransformedMatrix(y, transform)
 }
 \arguments{
-\item{y}{SparseMatrix object.}
+\item{y}{SparseMatrix object}
 
-\item{transform}{Transformation to apply to \code{y}.}
+\item{transform}{Transformation to apply to \code{y}}
 }
 \value{
-TransformedMatrix object.
+TransformedMatrix object
 }
 \description{
 TransformedMatrix Constructor.

@@ -11,6 +11,9 @@
 
 \item{default}{Default row-wise rates}
 }
+\value{
+Row-wise rates (row sums / total sum), or default value if provided
+}
 \description{
 Return a non-null default value or compute row-wise rates
 }

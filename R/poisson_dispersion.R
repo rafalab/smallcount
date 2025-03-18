@@ -3,6 +3,8 @@
 #' @param y Sparse matrix (can be a matrix, dgCMatrix, or SparseMatrix).
 #' @param rate Row-wise rates.
 #' @param n Total counts in each column.
+#' 
+#' @return Row-wise Poisson dispersion
 #'
 #' @importFrom SparseArray nzwhich rowSums
 #'

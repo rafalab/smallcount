@@ -7,25 +7,36 @@
 poissonPca(y, k = 50, transform = NULL, center = FALSE, scale = FALSE)
 }
 \arguments{
-\item{y}{Sparse matrix (can be a matrix, dgCMatrix, or SparseMatrix).}
+\item{y}{Sparse matrix (can be a matrix, dgCMatrix, or SparseMatrix)}
 
-\item{k}{Number of principal components to return. Default 50.}
+\item{k}{Number of principal components to return (Default: 50)}
 
 \item{transform}{CountTransform object or character(1) specifying a
-transformation to apply to \code{y} before PCA. Arguments \code{center} and \code{scale}
-are only applied when \code{transform} is a character string for a non-residual
-transformation. Accepted strings are: \code{"pearson"} for Pearson residuals,
-\code{"deviance"} for deviance residuals, \code{"id"} (or \code{NULL}) for the identity
-function, \code{"log1p"} for \code{log(x + 1)}, \code{"cpm_log1p"} for \code{log(x/1e6 + 1)},
-and \code{"med_log1p"} for \code{log(x/median(colSums(y)) + 1)}.}
+transformation to apply to \code{y} before PCA. Arguments \code{center} and
+\code{scale} are only applied when \code{transform} is a character string
+for a non-residual transformation. Accepted strings are: \code{"pearson"}
+for Pearson residuals, \code{"deviance"} for deviance residuals,
+\code{"id"} (or \code{NULL}) for the identity function, \code{"log1p"} for
+\code{log(x + 1)}, \code{"cpm_log1p"} for \code{log(x/1e6 + 1)}, and
+\code{"med_log1p"} for \code{log(x/median(colSums(y)) + 1)}.}
 
 \item{center}{Whether transformed data should be shifted to have mean zero.
 Can be specified either as a vector of two logical values, specifying
 whether the rows/columns should be centered, respectively, or a single
 logical value specifying whether the columns should be centered (for
-consistency with \code{\link[stats:prcomp]{stats::prcomp()}}).}
+consistency with \code{\link[stats]{prcomp()}}).}
 
-\item{scale}{Whether transformed rows should be scaled to have unit variance.}
+\item{scale}{Whether transformed rows should be scaled to have unit variance}
+}
+\value{
+List with components:
+\itemize{
+  \item{sdev}{Standard deviations of principal components}
+  \item{rotation}{Matrix of variable loadings (i.e., matrix containing the
+  eigenvectors of the covariance/correlation matrix as columns)}
+  \item{x}{Matrix of rotated data (rotated after applying the transformations
+  specified)}
+}
 }
 \description{
 Principal Component Analysis on Poisson data

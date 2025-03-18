@@ -10,10 +10,11 @@ Representation of a sparse count matrix after a CountTransform is applied.
 \section{Slots}{
 
 \describe{
-\item{\code{y}}{SparseMatrix object.}
+\item{\code{y}}{SparseMatrix object}
 
 \item{\code{row_offset,col_offset}}{Vectors whose product
-\code{outer(row_offset, col_offset)} represents the residual between \code{y} and a
-dense transformation of \code{y} (e.g., row-centered \code{y}).}
+\code{outer(row_offset, col_offset)} represents the residual between
+\code{y} and a dense transformation of \code{y} (e.g., row-centered
+\code{y})}
 }}
 

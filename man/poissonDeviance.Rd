@@ -7,11 +7,14 @@
 poissonDeviance(y, rate = NULL, n = NULL)
 }
 \arguments{
-\item{y}{Sparse matrix (can be a matrix, dgCMatrix, or SparseMatrix).}
+\item{y}{Sparse matrix (can be a matrix, dgCMatrix, or SparseMatrix)}
 
-\item{rate}{Row-wise rates.}
+\item{rate}{Row-wise rates}
 
-\item{n}{Total counts in each column.}
+\item{n}{Total counts in each column}
+}
+\value{
+Row-wise Poisson deviance
 }
 \description{
 Poisson Deviance

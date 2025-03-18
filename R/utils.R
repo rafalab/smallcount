@@ -1,6 +1,8 @@
 #' Convert a sparse matrix to a SparseMatrix object
 #'
-#' @param y Sparse matrix (can be a matrix, dgCMatrix, or SparseMatrix).
+#' @param y Sparse matrix (can be a matrix, dgCMatrix, or SparseMatrix)
+#' 
+#' @return SparseMatrix object
 #'
 #' @importFrom methods as is
 #' @keywords internal
@@ -17,6 +19,8 @@
 #'
 #' @param y SparseMatrix object
 #' @param default Default column sums
+#' 
+#' @return Column sums, or default value if provided
 #'
 #' @importFrom SparseArray colSums
 #' @keywords internal
@@ -31,6 +35,8 @@
 #'
 #' @param y SparseMatrix object
 #' @param default Default row-wise rates
+#' 
+#' @return Row-wise rates (row sums / total sum), or default value if provided
 #'
 #' @importFrom SparseArray colSums
 #' @keywords internal
@@ -42,12 +48,7 @@
     rsums / sum(rsums)
 }
 
-#' Divide a by b, returning zero if b is zero
-#'
-#' @param a Numerator
-#' @param b Denominator
-#'
-#' @keywords internal
+# Divide a by b, returning zero if b is zero
 .safeDivide <- function(a, b) {
     ifelse(b == 0, 0, a / b)
 }
@@ -56,6 +57,8 @@
 #'
 #' @param y SparseMatrix object
 #' @param nz_ind Linear indices of non-zero values
+#' 
+#' @return Row indices of non-zero matrix values
 #'
 #' @keywords internal
 .nzrows <- function(y, nz_ind) {
@@ -66,6 +69,8 @@
 #'
 #' @param y SparseMatrix object
 #' @param nz_ind Linear indices of non-zero values
+#' 
+#' @return Column indices of non-zero matrix values
 #'
 #' @keywords internal
 .nzcols <- function(y, nz_ind) {
@@ -77,7 +82,8 @@
 #' @param y SparseMatrix object
 #' @param rate Vector of row rates
 #' @param n Vector of column sums
-#' @return Vector of mu values for non-zero entries
+#' 
+#' @return Expected values for non-zero matrix entries
 #'
 #' @keywords internal
 .calculateMu <- function(y, nz_ind, rate, n) {

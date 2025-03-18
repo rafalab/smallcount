@@ -2,21 +2,34 @@
 % Please edit documentation in R/poisson_pca.R
 \name{.computePca}
 \alias{.computePca}
-\title{Compute the eigendecomposition of \code{R \%*\% t(R)} for a residual matrix \code{R}}
+\title{Compute the eigendecomposition of \code{R \%*\% t(R)} for a residual matrix
+\code{R}}
 \usage{
 .computePca(rtr, k, y, offset1 = NULL, offset2 = NULL)
 }
 \arguments{
-\item{rtr}{Cross product of residual matrix \code{R = y - offset1 \%*\% offset2}.}
+\item{rtr}{Cross product of residual matrix
+\code{R = y - offset1 \%*\% offset2}}
 
-\item{k}{Number of principal components to return.}
+\item{k}{Number of principal components to return}
 
-\item{y}{Sparse matrix.}
+\item{y}{Sparse matrix}
 
-\item{offset1, offset2}{Vectors whose product is the difference between \code{y}
-and the residual matrix.}
+\item{offset1, offset2}{Vectors whose product is the difference between
+\code{y} and the residual matrix}
+}
+\value{
+List with components:
+\itemize{
+  \item{sdev}{Standard deviations of principal components}
+  \item{rotation}{Matrix of variable loadings (i.e., matrix containing the
+  eigenvectors of the covariance/correlation matrix as columns)}
+  \item{x}{Matrix of rotated data (rotated after applying the transformations
+  specified)}
+}
 }
 \description{
-Compute the eigendecomposition of \code{R \%*\% t(R)} for a residual matrix \code{R}
+Compute the eigendecomposition of \code{R \%*\% t(R)} for a residual matrix
+\code{R}
 }
 \keyword{internal}

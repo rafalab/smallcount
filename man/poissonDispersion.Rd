@@ -13,6 +13,9 @@ poissonDispersion(y, rate = NULL, n = NULL)
 
 \item{n}{Total counts in each column.}
 }
+\value{
+Row-wise Poisson dispersion
+}
 \description{
 Poisson Dispersion
 }

@@ -11,6 +11,9 @@
 
 \item{default}{Default column sums}
 }
+\value{
+Column sums, or default value if provided
+}
 \description{
 Return a non-null default value or compute column sums
 }

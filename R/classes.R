@@ -11,10 +11,10 @@ setClassUnion("functionOrNull", c("function", "NULL"))
 #' @slot func Transformation to be applied to sparse count matrix. Should be a
 #'   function with a single parameter.
 #' @slot center_rows Whether transformed rows should be shifted to have mean
-#'   zero.
+#'   zero
 #' @slot center_cols Whether transformed columns should be shifted to have mean
-#'   zero.
-#' @slot scale Whether transformed rows should be scaled to have unit variance.
+#'   zero
+#' @slot scale Whether transformed rows should be scaled to have unit variance
 #'
 #' @export
 setClass(
@@ -41,8 +41,8 @@ setClass(
 #'   Can be specified either as a vector of two logical values, specifying
 #'   whether the rows/columns should be centered, respectively, or a single
 #'   logical value specifying whether the columns should be centered (for
-#'   consistency with [stats::prcomp()]).
-#' @param scale Whether transformed rows should be scaled to have unit variance.
+#'   consistency with \code{\link[stats]{prcomp()}}).
+#' @param scale Whether transformed rows should be scaled to have unit variance
 #'
 #' @return CountTransform object
 #' 
@@ -63,10 +63,11 @@ CountTransform <- function(func, center = FALSE, scale = FALSE) {
 #'
 #' Representation of a sparse count matrix after a CountTransform is applied.
 #'
-#' @slot y SparseMatrix object.
+#' @slot y SparseMatrix object
 #' @slot row_offset,col_offset Vectors whose product
-#'   `outer(row_offset, col_offset)` represents the residual between `y` and a
-#'   dense transformation of `y` (e.g., row-centered `y`).
+#'   \code{outer(row_offset, col_offset)} represents the residual between
+#'   \code{y} and a dense transformation of \code{y} (e.g., row-centered
+#'   \code{y})
 #'
 #' @export
 setClass(
@@ -80,10 +81,10 @@ setClass(
 
 #' TransformedMatrix Constructor.
 #'
-#' @param y SparseMatrix object.
-#' @param transform Transformation to apply to `y`.
+#' @param y SparseMatrix object
+#' @param transform Transformation to apply to \code{y}
 #'
-#' @return TransformedMatrix object.
+#' @return TransformedMatrix object
 #' 
 #' @importFrom methods new
 #' @export

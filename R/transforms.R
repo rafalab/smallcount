@@ -8,7 +8,7 @@
 #'   Can be specified either as a vector of two logical values, specifying
 #'   whether the rows/columns should be centered, respectively, or a single
 #'   logical value specifying whether the columns should be centered (for
-#'   consistency with [stats::prcomp()]).
+#'   consistency with \code{\link{stats}{prcomp()}}).
 #' @param scale Whether transformed rows should be scaled to have unit variance.
 #'
 #' @return CountTransform object.
@@ -31,7 +31,7 @@ log1p_transform <- function(center = FALSE, scale = FALSE) {
 
 #' Scaled Log1p Transformation
 #'
-#' CountTransform mapping x to log(`coef` * x + 1).
+#' CountTransform mapping x to log(\code{coef} * x + 1).
 #'
 #' @param coef Scaling coefficient.
 #' @inheritParams identity_transform

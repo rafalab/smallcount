@@ -14,9 +14,9 @@ function with a single parameter.}
 Can be specified either as a vector of two logical values, specifying
 whether the rows/columns should be centered, respectively, or a single
 logical value specifying whether the columns should be centered (for
-consistency with \code{\link[stats:prcomp]{stats::prcomp()}}).}
+consistency with \code{\link[stats]{prcomp()}}).}
 
-\item{scale}{Whether transformed rows should be scaled to have unit variance.}
+\item{scale}{Whether transformed rows should be scaled to have unit variance}
 }
 \value{
 CountTransform object

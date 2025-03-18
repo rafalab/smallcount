@@ -7,9 +7,19 @@
 .poissonDevianceResidualsPca(y, k)
 }
 \arguments{
-\item{y}{Sparse matrix (can be a matrix, dgCMatrix, or SparseMatrix).}
+\item{y}{Sparse matrix (can be a matrix, dgCMatrix, or SparseMatrix)}
 
-\item{k}{Number of principal components to return.}
+\item{k}{Number of principal components to return}
+}
+\value{
+List with components:
+\itemize{
+  \item{sdev}{Standard deviations of principal components}
+  \item{rotation}{Matrix of variable loadings (i.e., matrix containing the
+  eigenvectors of the covariance/correlation matrix as columns)}
+  \item{x}{Matrix of rotated data (rotated after applying the transformations
+  specified)}
+}
 }
 \description{
 Principal component analysis on deviance residuals

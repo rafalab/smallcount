@@ -14,7 +14,7 @@
 \item{n}{Vector of column sums}
 }
 \value{
-Vector of mu values for non-zero entries
+Expected values for non-zero matrix entries
 }
 \description{
 Calculate mu values from row rates and column sums

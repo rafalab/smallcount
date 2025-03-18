@@ -17,11 +17,11 @@ the sparsity of the matrix.
 function with a single parameter.}
 
 \item{\code{center_rows}}{Whether transformed rows should be shifted to have mean
-zero.}
+zero}
 
 \item{\code{center_cols}}{Whether transformed columns should be shifted to have mean
-zero.}
+zero}
 
-\item{\code{scale}}{Whether transformed rows should be scaled to have unit variance.}
+\item{\code{scale}}{Whether transformed rows should be scaled to have unit variance}
 }}
 
